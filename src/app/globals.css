@@ -3,25 +3,42 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --background: #101010;
+  --font: #efefef;
+  --highlight: #d0ff00;
+  --triadic1: #00d0ff;
+  --triadic2: #ff00d0;
+  --analogous1: #50ff00;
+  --analogous2: #ffaf00;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: var(--background);
+  color: var(--font);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+h1 {
+  letter-spacing: 2px;
+}
+
+p {
+  letter-spacing: -0.5px;
+}
+
+.xtext {
+  @apply text-[#D0FF00];
+}
+
+.xbtn {
+  @apply bg-[#D0FF00] text-black hover:bg-[white] active:bg-[#50ff00] active:shadow-none rounded-lg font-medium text-center shadow;
+}
+
+.btn {
+  @apply bg-zinc-400 text-black hover:bg-[white] active:bg-[#50ff00] active:shadow-none rounded-lg font-medium text-center shadow;
+}
+
+nav a {
+  @apply text-zinc-400 hover:text-[#D0FF00] active:text-[#50ff00];
 }
