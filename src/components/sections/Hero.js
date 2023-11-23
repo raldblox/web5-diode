@@ -6,7 +6,7 @@ import DiodeLink from "../utils/DiodeLink"
 const Hero = () => {
     return (
         <section className="grid content-center min-h-[calc(100vh-50px)]">
-            <div className="flex w-full max-w-screen-lg gap-16 px-4 mx-auto overflow-hidden md:px-8 md:flex">
+            <div className="flex w-full max-w-screen-lg gap-16 px-2 mx-auto overflow-hidden md:px-8 md:flex">
                 <div className='grid max-w-xl space-y-10'>
                     <h1 className="text-3xl font-bold sm:text-5xl">
                         Distinguish yourself in a <span className="xtext">decentralized</span> world

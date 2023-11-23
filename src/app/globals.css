@@ -23,6 +23,8 @@ body {
   font-weight: 400;
   letter-spacing: 1px;
   background-image: url(/grid.svg);
+  background-size: cover;
+  background-position: center;
 }
 
 h1 {

@@ -52,7 +52,7 @@ export default () => {
                         </button>
                     </div>
                 </div>
-                <div className={`flex-1 mt-8 py-8 md:block md:pb-0 md:mt-0 ${state ? 'block' : 'hidden'}`}>
+                <div className={`flex-1 mt-8 py-8 md:py-0 md:block md:pb-0 md:mt-0 ${state ? 'block' : 'hidden'}`}>
                     <ul className="items-center justify-end space-y-5 md:flex md:space-x-6 md:space-y-0">
                         {
                             navigation.map((item, idx) => {
