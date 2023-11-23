@@ -6,15 +6,18 @@ import { useContext, useState } from "react";
 export default () => {
     const { userDid, lockedName } = useContext(Context);
     const [selectedTab, setSelectedTab] = useState(0);
-
+    const [orgName, setOrgName] = useState('');
 
     const [profile, setProfile] = useState({
         name: lockedName,
         givenName: '',
         familyName: '',
         email: '',
-        telephone: '',
-        jobTitle: '',
+        wallet: '',
+        role: '',
+        orgs: [],
+        files: [],
+        links: []
     });
 
     const handleChange = (e) => {
@@ -23,6 +26,14 @@ export default () => {
             ...prevProfile,
             [name]: value,
         }));
+    };
+
+    const addOrganization = () => {
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            orgs: [...prevProfile.orgs, orgName]
+        }));
+        setOrgName("")
     };
 
     const handleSubmit = (e) => {
@@ -46,7 +57,7 @@ export default () => {
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M22.073.406c-3.45 0-6.428 2.857-6.428 6.433 0 3.45 2.978 6.307 6.428 6.307 3.572 0 6.432-2.857 6.432-6.307A6.406 6.406 0 0 0 22.073.406Z" fill="currentColor" />
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M7.787 5.648c-2.74 0-5.121 2.26-5.121 5.118 0 1.428.597 2.74 1.428 3.571-2.38 1.311-4.047 3.93-4.047 6.788v6.31a4.133 4.133 0 0 0 2.619 3.81v6.667c0 2.026 1.787 3.81 3.81 3.81h2.501c2.143 0 3.927-1.784 3.927-3.81v-6.667a4.561 4.561 0 0 0 1.311-.952c.476.238.715.597 1.312.952v9.169c0 2.022 1.784 3.93 3.926 3.93h5.239c2.025 0 3.93-1.787 3.93-3.93v-9.169c.476-.238.952-.476 1.428-.952.36.238.715.597 1.312.952v6.667c0 2.026 1.784 3.81 3.81 3.81h2.618c2.026 0 3.81-1.784 3.81-3.81v-6.667c1.55-.593 2.502-2.025 2.502-3.81v-6.31c.117-2.858-1.429-5.36-3.81-6.788.832-.832 1.429-2.143 1.429-3.571 0-2.858-2.381-5.118-5.242-5.118-2.736 0-5.117 2.26-5.117 5.118 0 1.428.593 2.74 1.428 3.571-.835.476-1.666 1.073-2.263 1.788-.356-.953-1.19-2.026-1.905-2.858-1.308 1.429-3.095 2.143-5 2.381v6.55c0 .846-.74 1.292-1.466 1.292-.703 0-1.391-.415-1.391-1.292v-6.55c-1.905-.238-3.692-1.19-5-2.38-.953.83-1.55 1.904-2.026 2.857a7.86 7.86 0 0 0-2.143-1.788c.832-.832 1.429-2.143 1.429-3.571 0-2.858-2.381-5.118-5.238-5.118Z" fill="currentColor" />
                 </svg>,
-            name: "Organizations",
+            name: "Orgs",
             online: false
         },
         {
@@ -56,17 +67,7 @@ export default () => {
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M34.414 21.27c-1.073 0-1.67 1.787-2.263 2.978-.597 1.428-1.905 2.142-3.334 2.142H.597v14.286c0 2.026 1.788 3.81 3.931 3.81h36.315c2.022 0 3.81-1.784 3.81-3.81V21.27H34.414Z" fill="currentColor" />
                 </svg>
             ,
-            name: "Credentials",
-            online: true
-        },
-        {
-            icon:
-                <svg className='w-4 h-4' viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M36.797 13.412v5.238h7.857v-1.31c0-2.143-1.788-3.927-3.81-3.927h-4.047Zm-6.551-7.74c1.667 0 1.784 2.498 0 2.498h-15.48a1.223 1.223 0 0 1-.2.015c-1.474 0-1.512-2.513.2-2.513h15.48Zm0 5.238c1.667 0 1.784 2.502 0 2.502h-15.48c-1.666 0-1.784-2.502 0-2.502h15.48Zm0 5.238c1.667 0 1.784 2.502 0 2.502h-15.48c-1.666 0-1.784-2.502 0-2.502h15.48ZM12.03.434c-.714 0-1.311.593-1.311 1.428v22.026h17.86c1.191 0 1.784-2.022 2.381-2.975.594-1.194 1.784-2.025 3.096-2.146V1.862c0-.835-.594-1.428-1.312-1.428H12.03ZM4.528 8.408c-2.143 0-3.93 1.788-3.93 3.814v11.666h7.74V8.408h-3.81Z" fill="currentColor" />
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M34.414 21.27c-1.073 0-1.67 1.787-2.263 2.978-.597 1.428-1.905 2.142-3.334 2.142H.597v14.286c0 2.026 1.788 3.81 3.931 3.81h36.315c2.022 0 3.81-1.784 3.81-3.81V21.27H34.414Z" fill="currentColor" />
-                </svg>
-            ,
-            name: "Files",
+            name: "Creds",
             online: true
         },
         {
@@ -83,17 +84,17 @@ export default () => {
     ]
     return (
         <div className="min-h-screen py-20" id="dashboard">
-            <section className="mb-10 border-b">
-                <ul className="flex items-center mx-auto overflow-x-auto gap-x-2">
+            <section className="">
+                <ul className="flex items-center justify-center mx-auto overflow-x-auto">
                     {
                         tabItems.map((item, idx) => {
                             return (
-                                <li key={idx} className={`py-2 duration-150 border-b-4 ${selectedTab == idx ? "border-black text-white" : "border-b-4 text-zinc-600  border-transparent"}`}>
+                                <li key={idx} className={`py-2 duration-150 border-b-4 ${selectedTab == idx ? "border-[#d0ff00] text-white" : "border-b-4 text-zinc-500  border-transparent"}`}>
                                     <button
                                         role="tab"
                                         aria-selected={selectedTab == idx ? true : false}
                                         aria-controls={`tabpanel-${idx + 1}`}
-                                        className={`flex items-center text-xs md:text-sm px-4 py-2 font-medium rounded-lg gap-x-2 hover:bg-zinc-800 active:bg-zinc-700`}
+                                        className={`flex uppercase items-center text-xs md:text-sm px-4 py-2 font-medium rounded-lg gap-x-2 hover:bg-zinc-800 active:bg-zinc-700`}
                                         onClick={() => setSelectedTab(idx)}
                                     >
                                         {item.icon}
@@ -105,14 +106,15 @@ export default () => {
                     }
                 </ul>
             </section>
-            <section>
+            <section className="bg-[#181818] py-10 rounded-2xl w-full">
                 {selectedTab == 0 &&
-                    <div className="grid md:grid-cols-2 gap-10">
-                        <form onSubmit={handleSubmit} className="col-span-1 grid gap-5">
+                    <div className="flex flex-col justify-start items-center gap-10 w-full">
+                        <h1 className="text-2xl font-bold">Manage Your Profile</h1>
+                        <form onSubmit={handleSubmit} className="col-span-1 grid px-10 gap-5 w-full">
                             <div classname="grid space-y-1">
-                                <label className="" htmlFor="username">Diode Account</label>
+                                <label className="text-zinc-500" htmlFor="username">Diode Account</label>
                                 <input
-                                    className="w-full px-3 py-1 text-sm border rounded-md border-zinc-700"
+                                    className="w-full px-3 py-1 border xtext rounded-md border-zinc-700"
                                     type="text"
                                     disabled={true}
                                     id="name"
@@ -122,9 +124,9 @@ export default () => {
                                 />
                             </div>
                             <div classname="grid space-y-1">
-                                <label className="" htmlFor="givenName">First Name</label>
+                                <label className="text-zinc-500" htmlFor="givenName">First Name</label>
                                 <input
-                                    className="w-full px-3 py-1 text-sm border rounded-md border-zinc-700"
+                                    className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                     type="text"
                                     id="givenName"
                                     name="givenName"
@@ -134,9 +136,9 @@ export default () => {
                                 />
                             </div>
                             <div classname="grid space-y-1">
-                                <label className="" htmlFor="familyName">Family Name</label>
+                                <label className="text-zinc-500" htmlFor="familyName">Family Name</label>
                                 <input
-                                    className="w-full px-3 py-1 text-sm border rounded-md border-zinc-700"
+                                    className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                     type="text"
                                     id="familyName"
                                     name="familyName"
@@ -146,9 +148,19 @@ export default () => {
                                 />
                             </div>
                             <div classname="grid space-y-1 mb-5">
-                                <label className="" htmlFor="email">Email Address</label>
+                                <label className="text-zinc-500" htmlFor="email">Job Title</label>
                                 <input
-                                    className="w-full px-3 py-1 text-sm border rounded-md border-zinc-700"
+                                    className="w-full px-3 py-1 border rounded-md border-zinc-700"
+                                    type="text"
+                                    placeholder="Founder"
+                                    value={profile.role}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div classname="grid space-y-1 mb-5">
+                                <label className="text-zinc-500" htmlFor="email">Email Address</label>
+                                <input
+                                    className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                     type="email"
                                     id="email"
                                     name="email"
@@ -157,8 +169,139 @@ export default () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <button className="px-4 py-2 w-fit mt-5 xbtn">Publish to Web5</button>
+                            <div classname="grid space-y-1 mb-5">
+                                <label className="text-zinc-500" htmlFor="email">Wallet Address</label>
+                                <input
+                                    className="w-full px-3 py-1 border rounded-md border-zinc-700"
+                                    type="text"
+                                    placeholder="0xWalletAddress"
+                                    value={profile.wallet}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <button className="px-4 py-2 w-full mt-5 xbtn">Publish to Web5</button>
 
+                        </form>
+                    </div>
+                }
+
+                {selectedTab == 1 &&
+                    <div className="flex flex-col justify-start items-center gap-10 w-full">
+                        <h1 className="text-2xl font-bold">Your Organizations</h1>
+                        <form onSubmit={handleSubmit} className="col-span-1 grid px-10 gap-5 w-full">
+                            <div className="grid space-y-1">
+                                <input
+                                    className="w-full px-3 py-1 border rounded-md border-zinc-700"
+                                    placeholder="Name of Organization"
+                                    name="orgs"
+                                    value={orgName}
+                                    onChange={(e) => setOrgName(e.target.value)}
+                                />
+                            </div>
+                            <button onClick={addOrganization} className="px-4 py-2 w-full btn">Add Organization</button>
+                            <div className="relative">
+                                <span className="block w-full h-px bg-zinc-400"></span>
+                                {/* <p className="absolute inset-x-0 inline-block px-4 mx-auto text-sm w-fit bg-[#181818] -top-2 uppercase">
+                                    ADDED ORGANIZATIONS
+                                </p> */}
+                            </div>
+
+                            <ul className="px-10 py-5">
+                                {profile.orgs.map((org, idx) => (
+                                    <li key={idx} className='flex items-center gap-5'>
+                                        <svg
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className="h-5 w-5 xtext"
+                                            viewBox='0 0 20 20'
+                                            fill='currentColor'>
+                                            <path
+                                                fill-rule='evenodd'
+                                                d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                                                clip-rule='evenodd'></path>
+                                        </svg>
+                                        {org}
+                                    </li>
+                                ))}
+                            </ul>
+                            {profile.orgs.length >= 1 && <button className="px-4 py-2 w-full xbtn">Publish to Web5</button>}
+                        </form>
+                    </div>
+                }
+                {selectedTab == 2 &&
+                    <div className="flex flex-col justify-start items-center gap-10 w-full">
+                        <h1 className="text-2xl font-bold">Manage Credentials</h1>
+                        <form onSubmit={handleSubmit} className="col-span-1 grid px-10 gap-5 w-full">
+                            <div className="grid space-y-1">
+                                <input
+                                    className="w-full px-3 py-1 border rounded-md border-zinc-700"
+                                    placeholder="Add Credential"
+                                    name="creds"
+                                    value={orgName}
+                                    onChange={(e) => setOrgName(e.target.value)}
+                                />
+                            </div>
+                            <button onClick={addOrganization} className="px-4 py-2 w-full btn">Add Credential</button>
+                            <div className="relative">
+                                <span className="block w-full h-px bg-zinc-400"></span>
+                            </div>
+
+                            <ul className="px-10 py-5">
+                                {profile.orgs.map((org, idx) => (
+                                    <li key={idx} className='flex items-center gap-5'>
+                                        <svg
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className="h-5 w-5 xtext"
+                                            viewBox='0 0 20 20'
+                                            fill='currentColor'>
+                                            <path
+                                                fill-rule='evenodd'
+                                                d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                                                clip-rule='evenodd'></path>
+                                        </svg>
+                                        {org}
+                                    </li>
+                                ))}
+                            </ul>
+                            {profile.orgs.length >= 1 && <button className="px-4 py-2 w-full xbtn">Publish to Web5</button>}
+                        </form>
+                    </div>
+                }
+                {selectedTab == 3 &&
+                    <div className="flex flex-col justify-start items-center gap-10 w-full">
+                        <h1 className="text-2xl font-bold">Manage Links</h1>
+                        <form onSubmit={handleSubmit} className="col-span-1 grid px-10 gap-5 w-full">
+                            <div className="grid space-y-1">
+                                <input
+                                    className="w-full px-3 py-1 border rounded-md border-zinc-700"
+                                    placeholder="Add Link"
+                                    name="links"
+                                    value={orgName}
+                                    onChange={(e) => setOrgName(e.target.value)}
+                                />
+                            </div>
+                            <button onClick={addOrganization} className="px-4 py-2 w-full btn">Add Link</button>
+                            <div className="relative">
+                                <span className="block w-full h-px bg-zinc-400"></span>
+                            </div>
+
+                            <ul className="px-10 py-5">
+                                {profile.orgs.map((org, idx) => (
+                                    <li key={idx} className='flex items-center gap-5'>
+                                        <svg
+                                            xmlns='http://www.w3.org/2000/svg'
+                                            className="h-5 w-5 xtext"
+                                            viewBox='0 0 20 20'
+                                            fill='currentColor'>
+                                            <path
+                                                fill-rule='evenodd'
+                                                d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                                                clip-rule='evenodd'></path>
+                                        </svg>
+                                        {org}
+                                    </li>
+                                ))}
+                            </ul>
+                            {profile.orgs.length >= 1 && <button className="px-4 py-2 w-full xbtn">Publish to Web5</button>}
                         </form>
                     </div>
                 }
