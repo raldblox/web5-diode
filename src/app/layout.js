@@ -2,6 +2,7 @@ import { Archivo } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import { ContextManager } from '@/providers/ContextManager'
 
 const archivo = Archivo({ subsets: ['latin'] })
 
@@ -14,9 +15,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={archivo.className}>
-        <Navigation />
-        {children}
-        <Footer />
+        <ContextManager>
+          <Navigation />
+          {children}
+          <Footer />
+        </ContextManager>
       </body>
     </html>
   )

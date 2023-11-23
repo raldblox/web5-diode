@@ -1,6 +1,14 @@
+"use client"
+
+import { Web5 } from "@web5/api";
 import Link from "next/link"
+import { useContext, useEffect } from "react";
+import ConnectWeb5 from "../utils/ConnectWeb5";
+import { Context } from "@/providers/ContextManager";
+import SpecialLink from "../utils/SpecialLink";
 
 export default ({ name }) => {
+    const { userDid } = useContext(Context);
 
     return (
         <main className="flex w-full flex-col items-center justify-center p-4 md:px-68 md:py-8 border shadow-2xl border-zinc-800 bg-[#181818] rounded-3xl">
@@ -29,6 +37,7 @@ export default ({ name }) => {
                                 className="w-full bg-[#262626] px-3 py-2 mt-2 border rounded-lg shadow-sm outline-none focus:border-[green]"
                             />
                         </div>
+
                         <button
                             className="w-full px-4 py-2 font-medium xbtn"
                         >
@@ -37,21 +46,16 @@ export default ({ name }) => {
                     </form>
                     <div className="relative">
                         <span className="block w-full h-px bg-white"></span>
-                        <p className="absolute inset-x-0 inline-block px-4 mx-auto text-sm w-fit bg-[#181818] -top-2 uppercase">Or continue with</p>
+                        <p className="absolute inset-x-0 inline-block px-4 mx-auto text-sm w-fit bg-[#181818] -top-2 uppercase">
+                            {userDid ? "Connected to Web5" : "CONNECT YOUR ACCOUNT"}
+                        </p>
                     </div>
-                    <div className="grid grid-cols-3 gap-x-3">
-                        <button className="flex items-center justify-center py-2 btn">
-                            ENS
-                        </button>
-                        <button className="flex items-center justify-center py-2 btn">
-                            LENS
-                        </button>
-                        <button className="flex items-center justify-center py-2 btn">
-                            NS
-                        </button>
+                    <div className="grid">
+                        <ConnectWeb5 />
                     </div>
                 </div>
             </div>
+
         </main>
     )
 }
