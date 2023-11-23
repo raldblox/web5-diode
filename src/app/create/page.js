@@ -2,7 +2,7 @@ import Container from '@/components/Container'
 import SignIn from '@/components/forms/SignIn'
 import React from 'react'
 
-const page = () => {
+export default () => {
     // check if available
 
     //
@@ -14,5 +14,3 @@ const page = () => {
         </Container>
     )
 }
-
-export default page

@@ -1,6 +1,6 @@
 "use client"
 
-import { Web5 } from "@web5/api/browser";
+import { Web5 } from "@web5/api";
 import React, { createContext, useEffect, useState } from "react";
 
 export const Context = createContext();
