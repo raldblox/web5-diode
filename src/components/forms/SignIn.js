@@ -1,8 +1,9 @@
 import Link from "next/link"
 
-export default () => {
+export default ({ name }) => {
+
     return (
-        <main className="flex flex-col items-center justify-center w-full p-4 md:px-6 md:py-8 border shadow-2xl border-zinc-800 bg-[#181818] rounded-3xl">
+        <main className="flex w-full flex-col items-center justify-center p-4 md:px-68 md:py-8 border shadow-2xl border-zinc-800 bg-[#181818] rounded-3xl">
             <div className="w-full space-y-6 sm:max-w-md">
                 <div className="text-center">
                     <div className="mt-5 space-y-2">
@@ -22,6 +23,7 @@ export default () => {
                                 <Link href="/shop" className="text-gray-500 hover:underline">Shop Names</Link>
                             </div>
                             <input
+                                value={name}
                                 type="text"
                                 required
                                 className="w-full bg-[#262626] px-3 py-2 mt-2 border rounded-lg shadow-sm outline-none focus:border-[green]"
@@ -38,13 +40,13 @@ export default () => {
                         <p className="absolute inset-x-0 inline-block px-4 mx-auto text-sm w-fit bg-[#181818] -top-2 uppercase">Or continue with</p>
                     </div>
                     <div className="grid grid-cols-3 gap-x-3">
-                        <button className="flex items-center justify-center py-2 border btn">
+                        <button className="flex items-center justify-center py-2 btn">
                             ENS
                         </button>
-                        <button className="flex items-center justify-center py-2 border btn">
+                        <button className="flex items-center justify-center py-2 btn">
                             LENS
                         </button>
-                        <button className="flex items-center justify-center py-2 border btn">
+                        <button className="flex items-center justify-center py-2 btn">
                             NS
                         </button>
                     </div>

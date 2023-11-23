@@ -26,7 +26,7 @@ h1 {
 }
 
 p {
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
 }
 
 .xtext {
@@ -38,7 +38,7 @@ p {
 }
 
 .btn {
-  @apply bg-zinc-400 text-black hover:bg-[white] active:bg-[#50ff00] active:shadow-none rounded-lg font-medium text-center shadow;
+  @apply bg-[#7d7d7d] text-black hover:bg-[white] active:bg-[#50ff00] active:shadow-none rounded-lg font-medium text-center shadow;
 }
 
 nav a {

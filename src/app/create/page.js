@@ -8,7 +8,7 @@ const page = () => {
     //
     return (
         <Container classname="flex items-center justify-center min-h-screen">
-            <div className='w-full max-w-md '>
+            <div className='w-full max-w-md'>
                 <SignIn />
             </div>
         </Container>
