@@ -6,7 +6,7 @@ import { useContext, useState } from "react";
 export default () => {
     const { userDid, lockedName } = useContext(Context);
     const [selectedTab, setSelectedTab] = useState(0);
-    const [orgName, setOrgName] = useState('');
+    const [newInput, setNewInput] = useState('');
 
     const [profile, setProfile] = useState({
         name: lockedName,
@@ -16,8 +16,8 @@ export default () => {
         wallet: '',
         role: '',
         orgs: [],
-        files: [],
-        links: []
+        links: [],
+        creds: []
     });
 
     const handleChange = (e) => {
@@ -31,9 +31,25 @@ export default () => {
     const addOrganization = () => {
         setProfile((prevProfile) => ({
             ...prevProfile,
-            orgs: [...prevProfile.orgs, orgName]
+            orgs: [...prevProfile.orgs, newInput]
         }));
-        setOrgName("")
+        setNewInput("")
+    };
+
+    const addCredential = () => {
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            creds: [...prevProfile.creds, newInput]
+        }));
+        setNewInput("")
+    };
+
+    const addLink = () => {
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            links: [...prevProfile.links, newInput]
+        }));
+        setNewInput("")
     };
 
     const handleSubmit = (e) => {
@@ -83,9 +99,9 @@ export default () => {
 
     ]
     return (
-        <div className="min-h-screen py-20" id="dashboard">
+        <div className="min-h-screen py-10 md:py-20" id="dashboard">
             <section className="">
-                <ul className="flex items-center justify-center mx-auto overflow-x-auto">
+                <ul className="flex items-center px-5 md:justify-center mx-auto overflow-x-auto">
                     {
                         tabItems.map((item, idx) => {
                             return (
@@ -110,7 +126,7 @@ export default () => {
                 {selectedTab == 0 &&
                     <div className="flex flex-col justify-start items-center gap-10 w-full">
                         <h1 className="text-2xl font-bold">Manage Your Profile</h1>
-                        <form onSubmit={handleSubmit} className="col-span-1 grid px-10 gap-5 w-full">
+                        <form onSubmit={handleSubmit} className="col-span-1 grid md:px-10 px-5 gap-5 w-full">
                             <div classname="grid space-y-1">
                                 <label className="text-zinc-500" htmlFor="username">Diode Account</label>
                                 <input
@@ -179,8 +195,6 @@ export default () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <button className="px-4 py-2 w-full mt-5 xbtn">Publish to Web5</button>
-
                         </form>
                     </div>
                 }
@@ -188,14 +202,14 @@ export default () => {
                 {selectedTab == 1 &&
                     <div className="flex flex-col justify-start items-center gap-10 w-full">
                         <h1 className="text-2xl font-bold">Your Organizations</h1>
-                        <form onSubmit={handleSubmit} className="col-span-1 grid px-10 gap-5 w-full">
+                        <form onSubmit={handleSubmit} className="col-span-1 grid md:px-10 px-5 gap-5 w-full">
                             <div className="grid space-y-1">
                                 <input
                                     className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                     placeholder="Name of Organization"
                                     name="orgs"
-                                    value={orgName}
-                                    onChange={(e) => setOrgName(e.target.value)}
+                                    value={newInput}
+                                    onChange={(e) => setNewInput(e.target.value)}
                                 />
                             </div>
                             <button onClick={addOrganization} className="px-4 py-2 w-full btn">Add Organization</button>
@@ -206,7 +220,7 @@ export default () => {
                                 </p> */}
                             </div>
 
-                            <ul className="px-10 py-5">
+                            <ul className="md:px-10 px-5 py-5">
                                 {profile.orgs.map((org, idx) => (
                                     <li key={idx} className='flex items-center gap-5'>
                                         <svg
@@ -223,30 +237,29 @@ export default () => {
                                     </li>
                                 ))}
                             </ul>
-                            {profile.orgs.length >= 1 && <button className="px-4 py-2 w-full xbtn">Publish to Web5</button>}
                         </form>
                     </div>
                 }
                 {selectedTab == 2 &&
                     <div className="flex flex-col justify-start items-center gap-10 w-full">
                         <h1 className="text-2xl font-bold">Manage Credentials</h1>
-                        <form onSubmit={handleSubmit} className="col-span-1 grid px-10 gap-5 w-full">
+                        <form onSubmit={handleSubmit} className="col-span-1 grid md:px-10 px-5 gap-5 w-full">
                             <div className="grid space-y-1">
                                 <input
                                     className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                     placeholder="Add Credential"
                                     name="creds"
-                                    value={orgName}
-                                    onChange={(e) => setOrgName(e.target.value)}
+                                    value={newInput}
+                                    onChange={(e) => setNewInput(e.target.value)}
                                 />
                             </div>
-                            <button onClick={addOrganization} className="px-4 py-2 w-full btn">Add Credential</button>
+                            <button onClick={addCredential} className="px-4 py-2 w-full btn">Add Credential</button>
                             <div className="relative">
                                 <span className="block w-full h-px bg-zinc-400"></span>
                             </div>
 
-                            <ul className="px-10 py-5">
-                                {profile.orgs.map((org, idx) => (
+                            <ul className="md:px-10 px-5 py-5">
+                                {profile.creds.map((org, idx) => (
                                     <li key={idx} className='flex items-center gap-5'>
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
@@ -262,30 +275,29 @@ export default () => {
                                     </li>
                                 ))}
                             </ul>
-                            {profile.orgs.length >= 1 && <button className="px-4 py-2 w-full xbtn">Publish to Web5</button>}
                         </form>
                     </div>
                 }
                 {selectedTab == 3 &&
                     <div className="flex flex-col justify-start items-center gap-10 w-full">
                         <h1 className="text-2xl font-bold">Manage Links</h1>
-                        <form onSubmit={handleSubmit} className="col-span-1 grid px-10 gap-5 w-full">
+                        <form onSubmit={handleSubmit} className="col-span-1 grid md:px-10 px-5 gap-5 w-full">
                             <div className="grid space-y-1">
                                 <input
                                     className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                     placeholder="Add Link"
                                     name="links"
-                                    value={orgName}
-                                    onChange={(e) => setOrgName(e.target.value)}
+                                    value={newInput}
+                                    onChange={(e) => setNewInput(e.target.value)}
                                 />
                             </div>
-                            <button onClick={addOrganization} className="px-4 py-2 w-full btn">Add Link</button>
+                            <button onClick={addLink} className="px-4 py-2 w-full btn">Add Link</button>
                             <div className="relative">
                                 <span className="block w-full h-px bg-zinc-400"></span>
                             </div>
 
-                            <ul className="px-10 py-5">
-                                {profile.orgs.map((org, idx) => (
+                            <ul className="md:px-10 px-5 py-5">
+                                {profile.links.map((org, idx) => (
                                     <li key={idx} className='flex items-center gap-5'>
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
@@ -301,11 +313,18 @@ export default () => {
                                     </li>
                                 ))}
                             </ul>
-                            {profile.orgs.length >= 1 && <button className="px-4 py-2 w-full xbtn">Publish to Web5</button>}
+
                         </form>
                     </div>
                 }
+
             </section>
+            <div className="flex w-full justify-center items-center p-5 md:p-10">
+                <button className="md:px-12 p-3 uppercase w-full xbtn">
+                    <h4>Publish to Web5</h4>
+                </button>
+            </div>
+
         </div>
     )
 }
