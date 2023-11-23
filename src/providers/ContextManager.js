@@ -1,6 +1,6 @@
 "use client"
 
-import { Web5 } from '@web5/api/browser';
+// import { Web5 } from '@web5/api/browser';
 import React, { createContext, useEffect, useState } from "react";
 
 export const Context = createContext();
@@ -8,25 +8,29 @@ export const Context = createContext();
 export const ContextManager = (props) => {
     const [web5, setWeb5] = useState(null);
     const [userDid, setUserDid] = useState("");
-
+    const [name, setName] = useState("")
     const [connecting, setConnecting] = useState(false);
 
     const connectAccount = async () => {
+        const { Web5 } = await import('@web5/api/browser');
         setConnecting(true);
         console.log("Connecting...")
-        const { web5, did: did } = await Web5.connect();
-        console.log("web5: ", web5);
+        const { web5, did } = await Web5.connect();
+        // console.log("web5: ", web5);
         console.log("did: ", did);
-        setWeb5(web5);
-        setUserDid(did);
-
         // Store the timestamp of the last connection in localStorage
         const timestamp = new Date().getTime();
         localStorage.setItem("lastConnectionTimestamp", timestamp);
-        setConnecting(false);
+
+        setTimeout(() => {
+            setWeb5(web5);
+            setUserDid(did);
+            setConnecting(false);
+        }, 1000);
     }
 
     const disconnectAccount = async () => {
+        localStorage.setItem("lastConnectionTimestamp", null);
         console.log("Disconnect")
         setWeb5("");
         setUserDid("");
@@ -56,7 +60,8 @@ export const ContextManager = (props) => {
     }, [])
 
     const value = {
-        web5, setWeb5, userDid, setUserDid, connectAccount, connecting, setConnecting, disconnectAccount
+        web5, setWeb5, userDid, setUserDid, connectAccount, connecting, setConnecting, disconnectAccount,
+        name, setName
     };
 
     return <Context.Provider value={value}>{props.children}</Context.Provider>;

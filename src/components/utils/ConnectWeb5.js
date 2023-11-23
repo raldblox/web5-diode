@@ -18,7 +18,7 @@ const ConnectWeb5 = () => {
                         Disconnect
                     </button>
                 </div> :
-                <button onClick={connectAccount} className='w-full px-4 py-2 btn'>Connect to Web5</button>
+                <button onClick={connectAccount} className='w-full px-4 py-2 btn'>{connecting ? "Connecting" : "Connect"} to Web5</button>
             }
         </div>
     )

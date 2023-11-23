@@ -7,11 +7,7 @@ const nextConfig = {
     },
 
     webpack: (config, { isServer }) => {
-        config.plugins.push(
-            new webpack.ProvidePlugin({
-                'self': 'self',
-            })
-        );
+
         if (!isServer) {
             config.resolve.fallback = {
                 ...config.resolve.fallback,
@@ -28,7 +24,7 @@ const nextConfig = {
                     (resource) => {
                         resource.request = resource.request.replace(/^node:/, '');
                     }
-                )
+                ),
             );
         }
         return config;
