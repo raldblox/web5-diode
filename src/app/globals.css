@@ -10,6 +10,7 @@
   --triadic2: #ff00d0;
   --analogous1: #50ff00;
   --analogous2: #ffaf00;
+  --hello: #091c00;
 }
 
 body {
@@ -17,6 +18,7 @@ body {
   color: var(--font);
   font-weight: 400;
   letter-spacing: 1px;
+  background-image: url(/grid.svg);
 }
 
 h1 {

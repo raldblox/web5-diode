@@ -1,6 +1,7 @@
 "use client"
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useState } from 'react'
 
 export default () => {
@@ -18,14 +19,14 @@ export default () => {
         <nav className="border-b z-50 max-h-16 sticky top-0 w-full md:text-sm md:border-none uppercase">
             <div className="items-center px-4 max-w-screen-2xl mx-auto md:flex md:px-8">
                 <div className="flex items-center justify-between py-3 md:py-5 md:block">
-                    <a href="">
+                    <Link href="/">
                         <Image
                             src="/branding/diode_wht.svg"
                             width={90}
                             height={40}
                             alt="Diode Logo"
                         />
-                    </a>
+                    </Link>
                     <div className="md:hidden">
                         <button className=""
                             onClick={() => setState(!state)}
