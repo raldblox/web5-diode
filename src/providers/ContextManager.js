@@ -1,6 +1,6 @@
 "use client"
 
-import { Web5 } from "@web5/api";
+import { Web5 } from '@web5/api/browser';
 import React, { createContext, useEffect, useState } from "react";
 
 export const Context = createContext();
@@ -14,7 +14,7 @@ export const ContextManager = (props) => {
     const connectAccount = async () => {
         setConnecting(true);
         console.log("Connecting...")
-        const { web5, did } = await Web5.connect();
+        const { web5, did: did } = await Web5.connect();
         console.log("web5: ", web5);
         console.log("did: ", did);
         setWeb5(web5);
