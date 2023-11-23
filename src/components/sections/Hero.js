@@ -5,10 +5,10 @@ import DiodeLink from "../utils/DiodeLink"
 
 const Hero = () => {
     return (
-        <section className="h-screen grid content-center">
-            <div className="max-w-screen-lg flex w-full mx-auto px-4 gap-16 overflow-hidden md:px-8 md:flex">
-                <div className='grid space-y-10 max-w-2xl'>
-                    <h1 className="text-3xl font-bold sm:text-5xl">
+        <section className="grid content-center h-screen">
+            <div className="flex w-full max-w-screen-lg gap-16 px-4 mx-auto overflow-hidden md:px-8 md:flex">
+                <div className='grid max-w-2xl space-y-10'>
+                    <h1 className="text-3xl font-bold leading-[3.5rem] sm:text-[3.2rem]">
                         Distinguish yourself in <span className="xtext">decentralized</span> world
                     </h1>
                     <p className="text-sm md:text-lg opacity-70">

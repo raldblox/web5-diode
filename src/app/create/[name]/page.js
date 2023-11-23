@@ -8,8 +8,6 @@ const page = ({ params }) => {
     const [validName, setValidName] = useState(false);
     const [checking, setChecking] = useState(null);
 
-
-
     useEffect(() => {
         setChecking(true);
         const registeredNames = ["raldblox"];
@@ -27,20 +25,20 @@ const page = ({ params }) => {
     }, [])
 
     return (
-        <Container classname="min-h-screen grid content-center">
-            <section className="h-screen grid content-center">
-                <div className="max-w-screen-lg grid w-full mx-auto px-4 gap-16 overflow-hidden md:px-8">
+        <Container classname="grid content-center min-h-screen">
+            <section className="grid content-center h-screen">
+                <div className="grid w-full max-w-screen-lg gap-16 px-4 mx-auto overflow-hidden md:px-8">
                     {checking ? "Checking..." :
                         <>
                             {validName ?
-                                <div className='grid space-y-10 max-w-2xl'>
-                                    <h1 className="text-xl font-bold font-mono sm:text-3xl">
+                                <div className='grid max-w-2xl space-y-10'>
+                                    <h1 className="font-mono text-xl font-bold sm:text-3xl">
                                         Name is valid.
                                     </h1>
                                 </div>
                                 :
-                                <div className='grid space-y-10 max-w-2xl'>
-                                    <h1 className="text-xl font-bold font-mono sm:text-3xl">
+                                <div className='grid max-w-2xl space-y-10'>
+                                    <h1 className="font-mono text-xl font-bold sm:text-3xl">
                                         Name already registered.
                                     </h1>
                                 </div>
