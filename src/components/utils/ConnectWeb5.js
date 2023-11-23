@@ -12,7 +12,7 @@ const ConnectWeb5 = () => {
             {userDid ?
                 <div className='flex flex-col items-center justify-between w-full gap-2 md:gap-4 md:flex-row'>
                     <div className='w-full'>
-                        <SpecialLink title="WEB5" desc={`${userDid.slice(0, 10)}...${userDid.slice(-8)}`} />
+                        <SpecialLink title="WEB5" desc={`${userDid.slice(0, 15)}...${userDid.slice(-5)}`} />
                     </div>
                     <button onClick={disconnectAccount} className='text-xs uppercase hover:text-red-500'>
                         Disconnect

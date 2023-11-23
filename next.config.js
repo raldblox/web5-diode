@@ -7,6 +7,11 @@ const nextConfig = {
     },
 
     webpack: (config, { isServer }) => {
+        config.plugins.push(
+            new webpack.ProvidePlugin({
+                'self': 'self',
+            })
+        );
         if (!isServer) {
             config.resolve.fallback = {
                 ...config.resolve.fallback,
