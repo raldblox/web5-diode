@@ -1,12 +1,15 @@
 "use client"
 
+import { Context } from '@/providers/ContextManager'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 export default () => {
+    const { name, userDid, connecting, connectAccount, lockedName } = useContext(Context);
 
     const [state, setState] = useState(false)
+    const [hidden, setHidden] = useState(false)
 
     const navigation = [
         { title: "Features", path: "" },
@@ -14,6 +17,14 @@ export default () => {
         { title: "Customers", path: "" },
         { title: "Pricing", path: "" }
     ]
+
+    useEffect(() => {
+        if (!name) { return }
+        setTimeout(() => {
+            setHidden(true);
+        }, 6000);
+    }, [name, lockedName])
+
 
     return (
         <nav className="sticky top-0 z-50 w-full uppercase border-b max-h-16 md:text-sm md:border-none">
@@ -56,16 +67,17 @@ export default () => {
                         }
                         <span className='hidden w-px h-6 bg-gray-500 md:block'></span>
                         <div className='items-center space-y-3 gap-x-4 md:flex md:space-y-0'>
-                            <li>
-                                <button href="" className="block px-6 py-2 btn">
-                                    Log in
+                            {name && <li>
+                                <button className={`block px-6 py-2 xbtn ${!hidden && "animate-pulse"}`}>
+                                    {name || lockedName}
                                 </button>
-                            </li>
-                            <li>
-                                <button href="" className="block px-6 py-2 xbtn md:inline">
-                                    Sign in
-                                </button>
-                            </li>
+                            </li>}
+                            {!hidden &&
+                                <li>
+                                    <button onClick={connectAccount} className="block px-6 py-2 btn md:inline">
+                                        {userDid ? <>{userDid.slice(0, 13)}...{userDid.slice(-5)}</> : <>{connecting ? "Connecting" : "Sign In"}</>}
+                                    </button>
+                                </li>}
                         </div>
                     </ul>
                 </div>

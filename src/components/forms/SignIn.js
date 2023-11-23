@@ -1,12 +1,29 @@
 "use client"
 
 import Link from "next/link"
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "@/providers/ContextManager";
 import ConnectWeb5 from "../utils/ConnectWeb5";
 
 export default () => {
-    const { userDid, name, setName } = useContext(Context);
+    const { userDid, name, setName, lockedName, setLockedName } = useContext(Context);
+
+    const registerName = async (newName) => {
+        setName(newName);
+    }
+
+    const handleLockName = async () => {
+        localStorage.setItem("lockedName", name);
+        setLockedName(name)
+    }
+
+    useEffect(() => {
+        const getName = async () => {
+            const username = localStorage.getItem("userName");
+            setName(username);
+        }
+        getName()
+    }, [])
 
     return (
         <main className="flex w-full flex-col items-center justify-center p-4 md:px-68 md:py-8 border shadow-2xl border-zinc-800 bg-[#181818] rounded-3xl">
@@ -29,14 +46,15 @@ export default () => {
                                 <Link href="/shop" className="text-gray-500 hover:underline">Shop Names</Link>
                             </div>
                             <input
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                disabled={!userDid || lockedName}
+                                value={name || lockedName}
+                                onChange={(e) => registerName(e.target.value)}
                                 type="text"
                                 required
                                 className="w-full bg-[#262626] px-3 py-2 mt-2 border rounded-lg shadow-sm outline-none focus:border-[green]"
                             />
                         </div>
-                        <button
+                        <button onClick={handleLockName}
                             className="w-full px-4 py-2 font-medium xbtn"
                         >
                             CREATE

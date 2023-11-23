@@ -9,11 +9,15 @@ export const ContextManager = (props) => {
     const [web5, setWeb5] = useState(null);
     const [userDid, setUserDid] = useState("");
     const [name, setName] = useState("")
+    const [lockedName, setLockedName] = useState("")
     const [connecting, setConnecting] = useState(false);
 
     const connectAccount = async () => {
         const { Web5 } = await import('@web5/api/browser');
         setConnecting(true);
+        const lockedname = localStorage.getItem("lockedName");
+        setLockedName(lockedname);
+
         console.log("Connecting...")
         const { web5, did } = await Web5.connect();
         // console.log("web5: ", web5);
@@ -25,6 +29,7 @@ export const ContextManager = (props) => {
         setTimeout(() => {
             setWeb5(web5);
             setUserDid(did);
+            setName(lockedname);
             setConnecting(false);
         }, 1000);
     }
@@ -59,9 +64,20 @@ export const ContextManager = (props) => {
         }
     }, [])
 
+    useEffect(() => {
+        const setName = async () => {
+            if (!lockedName) {
+                localStorage.setItem("userName", name);
+                console.log("name set")
+            }
+        }
+        setName();
+    }, [name])
+
+
     const value = {
         web5, setWeb5, userDid, setUserDid, connectAccount, connecting, setConnecting, disconnectAccount,
-        name, setName
+        name, setName, lockedName, setLockedName
     };
 
     return <Context.Provider value={value}>{props.children}</Context.Provider>;

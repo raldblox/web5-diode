@@ -13,6 +13,10 @@
   --hello: #091c00;
 }
 
+* {
+  @apply transition-all duration-300 ease-out;
+}
+
 body {
   background-color: var(--background);
   color: var(--font);
