@@ -68,7 +68,7 @@ export default () => {
                         <span className='hidden w-px h-6 bg-gray-500 md:block'></span>
                         <div className='items-center space-y-3 gap-x-4 md:flex md:space-y-0'>
                             {name && <li>
-                                <button onClick={(e) => setHidden(false)} className={`block px-6 py-2 xbtn ${!hidden && "animate-pulse"}`}>
+                                <button onClick={(e) => setHidden(!hidden)} className={`block px-6 py-2 xbtn ${!hidden && "animate-pulse"}`}>
                                     {name || lockedName}
                                 </button>
                             </li>}
