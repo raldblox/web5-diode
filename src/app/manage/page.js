@@ -551,13 +551,13 @@ export default () => {
                         {selectedTab == 3 &&
                             <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl md:text-3xl font-bold">My DWN Records</p>
+                                    <p className="text-xl py-1 md:text-3xl font-bold">My DWN Records</p>
                                 </div>
-                                <ul className=" py-5 w-full divide-y divide-zinc-800 space-y-2">
+                                <ul className="py-5 w-full text-sm md:text-base divide-y divide-zinc-800 space-y-2">
                                     {records?.slice().reverse().map((record, idx) => (
                                         <li key={idx} className={`flex pt-2 hover:text-[#D0FF00] rounded-xl hover:bg-zinc-800 items-center justify-between px-4 md:px-6 py-2 gap-5 ${idx === 0 ? 'bg-zinc-800' : ''
                                             }`}>
-                                            <a href={`/explore/${record.id}`} target='_blank' className='gap-2 tex-sm md:flex font-mono'> {record.id.slice(0, 10)}...{record.id.slice(-10)} <span className='font-semibold font-sans text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></a>
+                                            <a href={`/explore/${record.id}`} target='_blank' className='gap-2 md:flex font-mono'> {record.id.slice(0, 10)}...{record.id.slice(-5)} <span className='font-semibold font-sans whitespace-nowrap text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></a>
                                             <button onClick={() => deleteRecord(record.id)} className='text-red-900 hover:text-red-600 py-1'>Delete</button>
                                         </li>
                                     ))}
