@@ -4,6 +4,7 @@ import Container from '@/components/Container'
 import React, { useContext, useEffect, useState } from 'react'
 import { webcrypto } from "node:crypto";
 import { Context } from '@/providers/ContextManager';
+import Link from 'next/link';
 
 export default () => {
     const { userDid, lockedName, web5 } = useContext(Context);
@@ -350,9 +351,9 @@ export default () => {
                                     </p>
                                     <div className='flex gap-2'>
                                         {records && !fetching &&
-                                            <a href={`/explore/${records.slice(-1)[0]?.id}`} target='_blank' className="w-fit px-3 py-2 border btn rounded-md border-zinc-700">
+                                            <Link href={`/explore/${records.slice(-1)[0]?.id}`} className="w-fit px-3 py-2 border btn rounded-md border-zinc-700">
                                                 View Profile
-                                            </a>
+                                            </Link>
                                         }
                                         <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
                                             {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
