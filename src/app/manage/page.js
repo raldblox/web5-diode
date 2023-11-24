@@ -33,28 +33,25 @@ export default () => {
         get uri() { return this.context + this.type; }
     }
 
-    const affiliation = profile.orgs.map((org) => ({
-        '@type': 'Organization',
-        'name': org,
-    }));
-
-    //Person
-    const person = [
-        {
-            "@context": schema.context,
-            "@type": schema.type,
-            "identifier": userDid,
-            "jobTitle": profile.role,
-            "name": profile.fullName,
-            "disambiguatingDescription": profile.bio,
-            "affiliation": affiliation,
-            "email": profile.email,
-            "url": `https://web5.diode.digital/${lockedName}`
-        },
-    ]
-
     const publishPerson = async () => {
         setPublishing(true);
+
+        const person = [
+            {
+                "@context": schema.context,
+                "@type": schema.type,
+                "identifier": userDid,
+                "jobTitle": profile.role,
+                "name": profile.fullName,
+                "disambiguatingDescription": profile.bio,
+                "affiliation": profile.orgs,
+                "email": profile.email,
+                "url": profile.links
+            },
+        ]
+
+        console.log(person);
+
         const response = await web5.dwn.records.create({
             data: person,
             message: {
@@ -106,8 +103,10 @@ export default () => {
                             role: latestRecord[0].jobTitle,
                             fullName: latestRecord[0].name,
                             bio: latestRecord[0].disambiguatingDescription,
-                            links: [latestRecord[0].url]
+                            links: latestRecord[0].url,
+                            orgs: latestRecord[0].affiliation
                         });
+                        console.log(latestRecord[0]);
                     }
 
                 } catch (error) {
@@ -136,7 +135,7 @@ export default () => {
     const addOrganization = () => {
         setProfile((prevProfile) => ({
             ...prevProfile,
-            orgs: [...prevProfile.orgs, newInput]
+            orgs: [...(prevProfile.orgs || []), { '@type': 'Organization', 'name': newInput }]
         }));
         setNewInput("")
     };
@@ -152,9 +151,10 @@ export default () => {
     const addLink = () => {
         setProfile((prevProfile) => ({
             ...prevProfile,
-            links: [...prevProfile.links, newInput]
+            links: [
+                ...(prevProfile.links || []), newInput],
         }));
-        setNewInput("")
+        setNewInput('');
     };
 
     const handleSubmit = (e) => {
@@ -208,7 +208,6 @@ export default () => {
         <Container className="flex w-full items-center justify-center min-h-screen">
             <section className="w-full max-w-screen-md">
                 <div className="min-h-screen py-10 md:py-20" id="dashboard">
-                    {fetching && <h5 className='text-zinc-400 flex justify-center py-5'>Fetching your latest records...</h5>}
                     <section className="relative ">
                         <ul className="flex items-center px-5 md:justify-center mx-auto overflow-x-auto">
                             {
@@ -235,9 +234,15 @@ export default () => {
                         {selectedTab == 0 &&
                             <div className="flex flex-col justify-start items-center gap-10 md:px-10 px-5 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl md:text-3xl font-bold">Manage Your Profile</p>
+                                    <p className="text-xl gap-2 inline-flex md:text-3xl font-bold">Manage Your Profile {fetching &&
+                                        <div className='animate-spin text-white'>
+                                            <svg className='h-10' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
+                                            </svg>
+                                        </div>}</p>
+
                                     <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
-                                        {publishing ? "Publishing" : "Publish"}
+                                        {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
 
@@ -331,7 +336,7 @@ export default () => {
                                 <div className="flex w-full justify-between gap-4 items-start">
                                     <p className="text-xl md:text-3xl font-bold">Your Organizations</p>
                                     <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
-                                        {publishing ? "Publishing" : "Publish"}
+                                        {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
                                 <form onSubmit={handleSubmit} className="col-span-1 grid gap-5 w-full">
@@ -365,7 +370,7 @@ export default () => {
                                                         d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
                                                         clip-rule='evenodd'></path>
                                                 </svg>
-                                                {org}
+                                                {org.name}
                                             </li>
                                         ))}
                                     </ul>
@@ -377,7 +382,7 @@ export default () => {
                                 <div className="flex w-full justify-between gap-4 items-start">
                                     <p className="text-xl md:text-3xl font-bold">Your Credentials</p>
                                     <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
-                                        {publishing ? "Publishing" : "Publish"}
+                                        {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
                                 <form onSubmit={handleSubmit} className="col-span-1 grid  gap-5 w-full">
@@ -420,7 +425,7 @@ export default () => {
                                 <div className="flex w-full justify-between gap-4 items-start">
                                     <p className="text-xl md:text-3xl font-bold">Manage Your Links</p>
                                     <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
-                                        {publishing ? "Publishing" : "Publish"}
+                                        {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
                                 <form onSubmit={handleSubmit} className="col-span-1 grid  gap-5 w-full">
@@ -439,8 +444,8 @@ export default () => {
                                     </div>
 
                                     <ul className="md:px-10 px-5 py-5">
-                                        {profile.links?.map((org, idx) => (
-                                            <li key={idx} className='flex items-center gap-5'>
+                                        {profile?.links?.map((link, idx) => (
+                                            <a key={idx} href={link} target='_blank' className='flex hover:text-[#D0FF00] items-center gap-5'>
                                                 <svg
                                                     xmlns='http://www.w3.org/2000/svg'
                                                     className="h-5 w-5 xtext"
@@ -451,21 +456,18 @@ export default () => {
                                                         d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
                                                         clip-rule='evenodd'></path>
                                                 </svg>
-                                                {org}
-                                            </li>
+                                                {link}
+                                            </a>
                                         ))}
                                     </ul>
-
                                 </form>
                             </div>
                         }
                         <div className="block md:hidden w-full px-5 mt-10">
                             <button onClick={publishPerson} disabled={publishing} className=" p-2 uppercase w-full xbtn">
-                                {publishing ? "Publishing" : "Publish"}
+                                {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                             </button>
                         </div>
-
-
                     </section>
                 </div>
             </section>
