@@ -565,7 +565,7 @@ export default () => {
                             </div>
                         }
                         {selectedTab == 4 &&
-                            <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
+                            <div className="flex flex-col justify-start items-center md:px-10 px-5 pb-10 gap-10 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
                                     <p className="text-xl md:text-3xl font-bold">Share My Profile</p>
                                 </div>
@@ -578,14 +578,18 @@ export default () => {
                                     />
                                 </div>
                                 <button onClick={handleShare} className="px-4 py-2 w-full btn">Send My Profile</button>
-                                <p className='text-[#D0FF00] text-lg text-center'>{sent && "Profile Sent"}</p>
+                                {sent && <p className='text-[#D0FF00] text-lg text-center'>Profile Sent</p>}
                             </div>
                         }
-                        <div className='px-5 pt-5'>
-                            <button onClick={publishPerson} disabled={publishing} className="block py-2 md:hidden px-4 uppercase w-full xbtn">
-                                {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
-                            </button>
-                        </div>
+                        {
+                            selectedTab < 3 &&
+                            <div className='px-5 pt-5'>
+                                <button onClick={publishPerson} disabled={publishing} className="block py-2 md:hidden px-4 uppercase w-full xbtn">
+                                    {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
+                                </button>
+                            </div>
+                        }
+
 
                     </section>
                 </div>
