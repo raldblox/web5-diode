@@ -13,10 +13,10 @@ export default () => {
     const [copied, setCopied] = useState(false)
 
     const navigation = [
-        { title: "Features", path: "" },
-        { title: "DiodeNS", path: "" },
-        { title: "Customers", path: "" },
-        { title: "Pricing", path: "" }
+        { title: "Dashboard", path: "/manage" },
+        // { title: "DiodeNS", path: "" },
+        // { title: "Customers", path: "" },
+        // { title: "Pricing", path: "" }
     ]
 
     const handleCopy = async () => {
@@ -38,7 +38,7 @@ export default () => {
     return (
         <nav className="sticky top-0 z-50 w-full uppercase h-[50px] md:text-sm">
             <div className={`items-center px-4 mx-auto max-w-screen-2xl md:flex md:px-8 ${state ? 'bg-[#161616]' : 'bg-transparent'}`}>
-                <div className="flex items-center justify-between py-3 md:py-5 md:block">
+                <div className="flex items-center justify-between py-5 md:block">
                     <Link href="/">
                         <Image
                             src="/branding/diode_wht.svg"
