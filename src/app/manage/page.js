@@ -342,7 +342,7 @@ export default () => {
                         {selectedTab == 0 &&
                             <div className="flex flex-col justify-start items-center gap-10 md:px-10 px-5 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-2xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">My Web5 Profile {fetching &&
+                                    <p className="text-2xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">My Profile {fetching &&
                                         <div className='animate-spin text-white'>
                                             <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
@@ -351,7 +351,7 @@ export default () => {
                                     </p>
                                     <div className='flex gap-2'>
                                         {records && !fetching &&
-                                            <Link href={`/explore/${records.slice(-1)[0]?.id}`} className="w-fit px-3 py-2 border btn rounded-md border-zinc-700">
+                                            <Link href={`/explore/${records.slice(-1)[0]?.id}`} className="w-fit text-sm px-3 py-2 border btn rounded-md border-zinc-700">
                                                 View Profile
                                             </Link>
                                         }
@@ -581,6 +581,12 @@ export default () => {
                                 <p className='text-[#D0FF00] text-lg text-center'>{sent && "Profile Sent"}</p>
                             </div>
                         }
+                        <div className='px-5 pt-5'>
+                            <button onClick={publishPerson} disabled={publishing} className="block py-2 md:hidden px-4 uppercase w-full xbtn">
+                                {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
+                            </button>
+                        </div>
+
                     </section>
                 </div>
             </section>
