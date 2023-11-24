@@ -234,9 +234,9 @@ export default () => {
                         {selectedTab == 0 &&
                             <div className="flex flex-col justify-start items-center gap-10 md:px-10 px-5 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl gap-2 inline-flex md:text-3xl font-bold">Manage Your Profile {fetching &&
+                                    <p className="text-2xl py-1 gap-2 inline-flex items-center md:text-3xl font-bold">Manage Your Profile {fetching &&
                                         <div className='animate-spin text-white'>
-                                            <svg className='h-10' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
+                                            <svg className='h-8 md:h-10' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
                                             </svg>
                                         </div>}</p>
