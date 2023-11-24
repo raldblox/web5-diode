@@ -10,6 +10,7 @@ export default () => {
 
     const [state, setState] = useState(false)
     const [hidden, setHidden] = useState(false)
+    const [copied, setCopied] = useState(false)
 
     const navigation = [
         { title: "Features", path: "" },
@@ -18,11 +19,19 @@ export default () => {
         { title: "Pricing", path: "" }
     ]
 
+    const handleCopy = async () => {
+        navigator.clipboard.writeText(userDid);
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 3000);
+    }
+
     useEffect(() => {
         if (!name) { return }
         setTimeout(() => {
             setHidden(true);
-        }, 6000);
+        }, 5000);
     }, [name, lockedName, hidden])
 
 
@@ -74,8 +83,8 @@ export default () => {
                             </li>}
                             {!hidden &&
                                 <li>
-                                    <button onClick={connectAccount} className="block px-6 py-2 btn md:inline">
-                                        {userDid ? <>{userDid.slice(0, 13)}...{userDid.slice(-5)}</> : <>{connecting ? "Connecting" : "Sign In"}</>}
+                                    <button onClick={userDid ? handleCopy : connectAccount} className="block px-6 py-2 btn md:inline">
+                                        {userDid ? <>{copied ? "Copied to clipboard" : <>{userDid.slice(0, 13)}...{userDid.slice(-5)}</>}</> : <>{connecting ? "Connecting" : "Sign In"}</>}
                                     </button>
                                 </li>}
                         </div>
