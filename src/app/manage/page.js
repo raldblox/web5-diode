@@ -154,7 +154,8 @@ export default () => {
                             fullName: latestRecord[0].name,
                             bio: latestRecord[0].disambiguatingDescription,
                             links: latestRecord[0].url,
-                            orgs: latestRecord[0].affiliation
+                            orgs: latestRecord[0].affiliation,
+                            wallet: latestRecord[0].identifier
                         });
                         console.log(latestRecord[0]);
                     }
