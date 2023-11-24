@@ -12,6 +12,8 @@ export default () => {
     const [records, setRecords] = useState([]);
     const [publishing, setPublishing] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [sent, setSent] = useState(false);
+    const [recipient, setRecipient] = useState("");
     const [fetching, setFetching] = useState(false);
 
     const [profile, setProfile] = useState({
@@ -32,25 +34,24 @@ export default () => {
         get uri() { return this.context + this.type; }
     }
 
+    const person = [
+        {
+            "@context": schema.context,
+            "@type": schema.type,
+            "identifier": userDid,
+            "jobTitle": profile.role,
+            "name": profile.fullName,
+            "disambiguatingDescription": profile.bio,
+            "affiliation": profile.orgs,
+            "email": profile.email,
+            "url": profile.links,
+            "identifier": profile.wallet,
+            "additionalName": lockedName,
+        },
+    ]
+
     const publishPerson = async () => {
         setPublishing(true);
-
-        const person = [
-            {
-                "@context": schema.context,
-                "@type": schema.type,
-                "identifier": userDid,
-                "jobTitle": profile.role,
-                "name": profile.fullName,
-                "disambiguatingDescription": profile.bio,
-                "affiliation": profile.orgs,
-                "email": profile.email,
-                "url": profile.links,
-                "identifier": profile.wallet,
-                "additionalName": lockedName,
-            },
-        ]
-
         console.log(person);
 
         const response = await web5.dwn.records.create({
@@ -100,8 +101,6 @@ export default () => {
             },
         });
 
-        console.log("delete respo", response)
-
         if (response.status.code === 202) {
             setSuccess(true)
             console.log(`Record deleted successfully`);
@@ -110,6 +109,41 @@ export default () => {
         }
         setSuccess(false)
 
+    };
+
+    const handleShare = async (e) => {
+
+        const writeToDwn = async (profile) => {
+            const { record } = await web5.dwn.records.write({
+                data: profile,
+                message: {
+                    schema: schema.uri,
+                    dataFormat: 'application/json',
+                    published: true,
+                    recipient: recipient,
+                },
+            });
+            return record;
+        };
+
+        const sendRecord = async (record) => {
+            return await record.send(recipient);
+        };
+
+        const record = await writeToDwn(person);
+        const { status } = await sendRecord(record);
+
+        console.log("Share status", status);
+
+        if (status.code === 202) {
+            setSent(true)
+            console.log(`Profile sent successfully`);
+        } else {
+            console.log(`${status}. Error sending profile`);
+        }
+        setTimeout(() => {
+            setSent(false)
+        }, 3000);
     };
 
     // Function to fetch Person
@@ -263,6 +297,17 @@ export default () => {
             name: "Records",
             online: true
         },
+        {
+            icon:
+                <svg className="w-4 h-4" width="10" height="10" viewBox="0 0 0.2 0.2" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M.05.113H.1v.025H.05V.113z" />
+                    <path fill="currentColor" d="M.2.025H.187V0H.063v.025H.038v.016L.03.05H.013v.022L0 .088v.113h.15L.2.138V.025zM.025.063h.1v.025h-.1V.063zm.113.125H.013V.1h.125v.088zm.013-.1H.138V.05H.05V.038h.1v.05zM.176.057.163.073V.025H.075V.013h.1v.044z" />
+                </svg>
+
+            ,
+            name: "Share",
+            online: true
+        },
 
     ]
 
@@ -303,13 +348,20 @@ export default () => {
                                             </svg>
                                         </div>}
                                     </p>
-
-                                    <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
-                                        {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
-                                    </button>
+                                    <div className='flex gap-2'>
+                                        {records && !fetching &&
+                                            <a href={`/explore/${records.slice(-1)[0]?.id}`} target='_blank' className="w-fit px-3 py-2 border btn rounded-md border-zinc-700">
+                                                View Profile
+                                            </a>
+                                        }
+                                        <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
+                                            {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
+                                        </button>
+                                    </div>
                                 </div>
 
                                 <form onSubmit={handleSubmit} className="col-span-1 grid gap-5 w-full">
+
                                     <div className="grid space-y-1">
                                         <label className="text-zinc-500" htmlFor="username">Decentralized Identity</label>
                                         <input
@@ -446,49 +498,6 @@ export default () => {
                                 </form>
                             </div>
                         }
-                        {/* {selectedTab == 2 &&
-                            <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
-                                <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl md:text-3xl font-bold">Your Credentials</p>
-                                    <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
-                                        {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
-                                    </button>
-                                </div>
-                                <form onSubmit={handleSubmit} className="col-span-1 grid  gap-5 w-full">
-                                    <div className="grid space-y-1">
-                                        <input
-                                            className="w-full px-3 py-1 border rounded-md border-zinc-700"
-                                            placeholder="Add Credential"
-                                            name="creds"
-                                            value={newInput}
-                                            onChange={(e) => setNewInput(e.target.value)}
-                                        />
-                                    </div>
-                                    <button onClick={addCredential} className="px-4 py-2 w-full btn">Add Credential</button>
-                                    <div className="relative">
-                                        <span className="block w-full h-px bg-zinc-400"></span>
-                                    </div>
-
-                                    <ul className="md:px-10 px-5 py-5">
-                                        {profile.creds?.map((org, idx) => (
-                                            <li key={idx} className='flex items-center gap-5'>
-                                                <svg
-                                                    xmlns='http://www.w3.org/2000/svg'
-                                                    className="h-5 w-5 xtext"
-                                                    viewBox='0 0 20 20'
-                                                    fill='currentColor'>
-                                                    <path
-                                                        fill-rule='evenodd'
-                                                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                                                        clip-rule='evenodd'></path>
-                                                </svg>
-                                                {org}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </form>
-                            </div>
-                        } */}
                         {selectedTab == 2 &&
                             <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
@@ -547,11 +556,28 @@ export default () => {
                                     {records?.slice().reverse().map((record, idx) => (
                                         <li key={idx} className={`flex pt-2 hover:text-[#D0FF00] rounded-xl hover:bg-zinc-800 items-center justify-between px-4 md:px-6 py-2 gap-5 ${idx === 0 ? 'bg-zinc-800' : ''
                                             }`}>
-                                            <p className='gap-2 tex-sm md:flex font-mono'> {record.id.slice(0, 10)}...{record.id.slice(-10)} <span className='font-semibold font-sans text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></p>
+                                            <a href={`/explore/${record.id}`} target='_blank' className='gap-2 tex-sm md:flex font-mono'> {record.id.slice(0, 10)}...{record.id.slice(-10)} <span className='font-semibold font-sans text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></a>
                                             <button onClick={() => deleteRecord(record.id)} className='text-red-900 hover:text-red-600 py-1'>Delete</button>
                                         </li>
                                     ))}
                                 </ul>
+                            </div>
+                        }
+                        {selectedTab == 4 &&
+                            <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
+                                <div className="flex w-full justify-between gap-4 items-start">
+                                    <p className="text-xl md:text-3xl font-bold">Share My Profile</p>
+                                </div>
+                                <div className="grid space-y-1 w-full">
+                                    <input
+                                        className="w-full px-3 py-1 border rounded-md border-zinc-700"
+                                        placeholder="Recipient DID"
+                                        value={recipient}
+                                        onChange={(e) => setRecipient(e.target.value)}
+                                    />
+                                </div>
+                                <button onClick={handleShare} className="px-4 py-2 w-full btn">Send My Profile</button>
+                                <p className='text-[#D0FF00] text-lg text-center'>{sent && "Profile Sent"}</p>
                             </div>
                         }
                     </section>

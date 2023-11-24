@@ -18,11 +18,11 @@ export const ContextManager = (props) => {
         const lockedname = localStorage.getItem("lockedName");
         setLockedName(lockedname);
 
-        console.log("Connecting...")
-        const { web5, did } = await Web5.connect();
-        // console.log("web5: ", web5);
+        console.log("Connecting web5")
+        const { web5, did } = await Web5.connect({
+            sync: '5s'
+        });
         console.log("did: ", did);
-        // Store the timestamp of the last connection in localStorage
         const timestamp = new Date().getTime();
         localStorage.setItem("lastConnectionTimestamp", timestamp);
 
@@ -68,7 +68,7 @@ export const ContextManager = (props) => {
         const setName = async () => {
             if (!lockedName) {
                 localStorage.setItem("userName", name);
-                console.log("name set")
+                // console.log("name set")
             }
         }
         setName();
