@@ -15,7 +15,7 @@ const DiodeLink = () => {
                 <Link href="/manage" className='flex justify-center items-center px-4 py-2 m-1 text-center md:whitespace-nowrap xbtn'>
                     Manage Diode
                 </Link> :
-                <Link href="/create" className='flex justify-center w-full items-center px-4 py-2 m-1 text-center xbtn'>
+                <Link href="/create" className='flex justify-center items-center px-4 py-2 m-1 text-center xbtn'>
                     Create Diode
                 </Link>}
         </div>

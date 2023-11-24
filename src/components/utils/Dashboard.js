@@ -124,9 +124,23 @@ export default () => {
             </section>
             <section className="bg-[#181818] py-10 rounded-2xl w-full">
                 {selectedTab == 0 &&
-                    <div className="flex flex-col justify-start items-center gap-10 w-full">
-                        <h1 className="text-2xl font-bold">Manage Your Profile</h1>
-                        <form onSubmit={handleSubmit} className="col-span-1 grid md:px-10 px-5 gap-5 w-full">
+                    <div className="flex flex-col justify-start items-center gap-10 md:px-10 px-5 w-full">
+                        <div className="flex w-full justify-between gap-4 items-start">
+                            <p className="text-xl md:text-3xl font-bold">Manage Your Profile</p>
+                            <button className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
+                                Publish
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="col-span-1 grid gap-5 w-full">
+                            <div classname="grid space-y-1">
+                                <label className="text-zinc-500" htmlFor="username">Decentralized Identity</label>
+                                <input
+                                    className="w-full px-3 py-1 border xtext rounded-md border-zinc-700"
+                                    disabled={true}
+                                    value={userDid}
+                                />
+                            </div>
                             <div classname="grid space-y-1">
                                 <label className="text-zinc-500" htmlFor="username">Diode Account</label>
                                 <input
@@ -200,9 +214,14 @@ export default () => {
                 }
 
                 {selectedTab == 1 &&
-                    <div className="flex flex-col justify-start items-center gap-10 w-full">
-                        <h1 className="text-2xl font-bold">Your Organizations</h1>
-                        <form onSubmit={handleSubmit} className="col-span-1 grid md:px-10 px-5 gap-5 w-full">
+                    <div className="flex flex-col justify-start items-center  md:px-10 px-5 gap-10 w-full">
+                        <div className="flex w-full justify-between gap-4 items-start">
+                            <p className="text-xl md:text-3xl font-bold">Your Organizations</p>
+                            <button className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
+                                Publish
+                            </button>
+                        </div>
+                        <form onSubmit={handleSubmit} className="col-span-1 grid gap-5 w-full">
                             <div className="grid space-y-1">
                                 <input
                                     className="w-full px-3 py-1 border rounded-md border-zinc-700"
@@ -221,7 +240,7 @@ export default () => {
                             </div>
 
                             <ul className="md:px-10 px-5 py-5">
-                                {profile.orgs.map((org, idx) => (
+                                {profile.orgs?.map((org, idx) => (
                                     <li key={idx} className='flex items-center gap-5'>
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
@@ -241,9 +260,14 @@ export default () => {
                     </div>
                 }
                 {selectedTab == 2 &&
-                    <div className="flex flex-col justify-start items-center gap-10 w-full">
-                        <h1 className="text-2xl font-bold">Manage Credentials</h1>
-                        <form onSubmit={handleSubmit} className="col-span-1 grid md:px-10 px-5 gap-5 w-full">
+                    <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
+                        <div className="flex w-full justify-between gap-4 items-start">
+                            <p className="text-xl md:text-3xl font-bold">Your Credentials</p>
+                            <button className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
+                                Publish
+                            </button>
+                        </div>
+                        <form onSubmit={handleSubmit} className="col-span-1 grid  gap-5 w-full">
                             <div className="grid space-y-1">
                                 <input
                                     className="w-full px-3 py-1 border rounded-md border-zinc-700"
@@ -259,7 +283,7 @@ export default () => {
                             </div>
 
                             <ul className="md:px-10 px-5 py-5">
-                                {profile.creds.map((org, idx) => (
+                                {profile.creds?.map((org, idx) => (
                                     <li key={idx} className='flex items-center gap-5'>
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
@@ -279,9 +303,14 @@ export default () => {
                     </div>
                 }
                 {selectedTab == 3 &&
-                    <div className="flex flex-col justify-start items-center gap-10 w-full">
-                        <h1 className="text-2xl font-bold">Manage Links</h1>
-                        <form onSubmit={handleSubmit} className="col-span-1 grid md:px-10 px-5 gap-5 w-full">
+                    <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
+                        <div className="flex w-full justify-between gap-4 items-start">
+                            <p className="text-xl md:text-3xl font-bold">Manage Your Links</p>
+                            <button className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
+                                Publish
+                            </button>
+                        </div>
+                        <form onSubmit={handleSubmit} className="col-span-1 grid  gap-5 w-full">
                             <div className="grid space-y-1">
                                 <input
                                     className="w-full px-3 py-1 border rounded-md border-zinc-700"
@@ -297,7 +326,7 @@ export default () => {
                             </div>
 
                             <ul className="md:px-10 px-5 py-5">
-                                {profile.links.map((org, idx) => (
+                                {profile.links?.map((org, idx) => (
                                     <li key={idx} className='flex items-center gap-5'>
                                         <svg
                                             xmlns='http://www.w3.org/2000/svg'
@@ -317,14 +346,14 @@ export default () => {
                         </form>
                     </div>
                 }
+                <div className="block md:hidden w-full px-5 mt-10">
+                    <button className=" p-2 uppercase w-full xbtn">
+                        Publish
+                    </button>
+                </div>
+
 
             </section>
-            <div className="flex w-full justify-center items-center p-5 md:p-10">
-                <button className="md:px-12 p-2 uppercase w-full xbtn">
-                    <h4>Publish to Web5</h4>
-                </button>
-            </div>
-
         </div>
     )
 }
