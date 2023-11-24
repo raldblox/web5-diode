@@ -2,8 +2,8 @@ import Container from "./Container"
 
 const Footer = () => {
     return (
-        <Container classname="">
-            <footer className="text-sm py-5 px-2">
+        <Container className="">
+            <footer className="text-sm py-5 px-2 text-zinc-700">
                 <h5>© Digital Diode | All rights reserved</h5>
             </footer>
         </Container>

@@ -8,7 +8,7 @@ export default () => {
 
 
     return (
-        <Container classname="flex w-full items-center justify-center min-h-screen">
+        <Container className="flex w-full items-center justify-center min-h-screen">
             <section className="w-full max-w-md">
                 <SignIn />
             </section>
