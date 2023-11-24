@@ -7,9 +7,8 @@ import { Context } from '@/providers/ContextManager';
 
 export default () => {
     const { userDid, lockedName, web5 } = useContext(Context);
-    const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedTab, setSelectedTab] = useState(4);
     const [newInput, setNewInput] = useState('');
-
     const [records, setRecords] = useState([]);
     const [publishing, setPublishing] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -75,6 +74,41 @@ export default () => {
         }, 3000);
     }
 
+    const deleteRecord = async (recordId) => {
+
+        let deletedRecord;
+        let index = 0;
+
+        for (let record of records) {
+            if (recordId === record.id) {
+                deletedRecord = record;
+                break;
+            }
+            index++;
+        }
+
+        // Remove the record from the records array
+        const updatedRecords = [...records];
+        updatedRecords.splice(index, 1);
+        setRecords(updatedRecords);
+
+        const response = await web5.dwn.records.delete({
+            message: {
+                recordId: recordId,
+            },
+        });
+
+        console.log("delete respo", response)
+
+        if (response.status.code === 202) {
+            console.log(`Record deleted successfully`);
+        } else {
+            console.log(`${response.status}. Error deleting record`);
+        }
+
+    };
+
+
     // Function to fetch Person
     useEffect(() => {
 
@@ -89,12 +123,25 @@ export default () => {
                     },
                     dateSort: 'createdAscending',
                 });
+
+                const rawdata = [];
+
+                for (let record of records) {
+                    const data = await record.data.json();
+                    const newData = { data, id: record.id };
+                    rawdata.push(newData);
+                }
+
+                setRecords(rawdata);
+                console.log("raw", rawdata);
+
                 try {
                     const results = await Promise.all(
                         records.map(async (record) => record.data.json())
                     );
+                    console.log(results);
                     const latestRecord = results[results.length - 1];
-                    console.log(latestRecord);
+                    // console.log(latestRecord);
 
                     if (recordStatus.code == 200) {
                         console.log("Person records fetched");
@@ -112,7 +159,7 @@ export default () => {
                 } catch (error) {
                     console.error(error);
                 }
-                setRecords(records);
+
             } catch (error) {
                 console.error('Error fetching:', error);
             }
@@ -201,6 +248,17 @@ export default () => {
             name: "Links",
             online: true
         },
+        {
+            icon:
+                <svg className="w-4 h-4" width="10" height="10" viewBox="0 0 0.2 0.2" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="currentColor" d="M.05.113H.1v.025H.05V.113z" />
+                    <path fill="currentColor" d="M.2.025H.187V0H.063v.025H.038v.016L.03.05H.013v.022L0 .088v.113h.15L.2.138V.025zM.025.063h.1v.025h-.1V.063zm.113.125H.013V.1h.125v.088zm.013-.1H.138V.05H.05V.038h.1v.05zM.176.057.163.073V.025H.075V.013h.1v.044z" />
+                </svg>
+
+            ,
+            name: "Records",
+            online: true
+        },
 
     ]
 
@@ -234,9 +292,9 @@ export default () => {
                         {selectedTab == 0 &&
                             <div className="flex flex-col justify-start items-center gap-10 md:px-10 px-5 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-2xl py-1 gap-2 inline-flex items-center md:text-3xl font-bold">Manage Your Profile {fetching &&
+                                    <p className="text-2xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">Manage Your Profile {fetching &&
                                         <div className='animate-spin text-white'>
-                                            <svg className='h-8 md:h-10' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
+                                            <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
                                             </svg>
                                         </div>}</p>
@@ -461,6 +519,21 @@ export default () => {
                                         ))}
                                     </ul>
                                 </form>
+                            </div>
+                        }
+                        {selectedTab == 4 &&
+                            <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
+                                <div className="flex w-full justify-between gap-4 items-start">
+                                    <p className="text-xl md:text-3xl font-bold">Your DWN Records</p>
+                                </div>
+                                <ul className="md:px-10 px-5 py-5 w-full divide-y divide-zinc-800 space-y-2">
+                                    {records?.map((record, idx) => (
+                                        <li key={idx} className='flex pt-2 hover:text-[#D0FF00] items-center justify-between gap-5'>
+                                            <p className='gap-4 flex'><span className='font-semibold'>ID No.{idx}:</span> {record.id.slice(0, 10)}...{record.id.slice(-10)}</p>
+                                            <button onClick={() => deleteRecord(record.id)} className='bg-red-900 text-white px-3 py-1'>Delete</button>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         }
                         <div className="block md:hidden w-full px-5 mt-10">
