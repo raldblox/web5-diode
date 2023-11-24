@@ -320,7 +320,7 @@ export default () => {
 
             </section>
             <div className="flex w-full justify-center items-center p-5 md:p-10">
-                <button className="md:px-12 p-3 uppercase w-full xbtn">
+                <button className="md:px-12 p-2 uppercase w-full xbtn">
                     <h4>Publish to Web5</h4>
                 </button>
             </div>
