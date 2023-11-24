@@ -67,9 +67,9 @@ export default () => {
                             navigation.map((item, idx) => {
                                 return (
                                     <li key={idx} className="">
-                                        <a href={item.path} className="block">
+                                        <Link href={item.path} className="block">
                                             {item.title}
-                                        </a>
+                                        </Link>
                                     </li>
                                 )
                             })
