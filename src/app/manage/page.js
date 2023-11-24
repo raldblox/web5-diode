@@ -7,7 +7,7 @@ import { Context } from '@/providers/ContextManager';
 
 export default () => {
     const { userDid, lockedName, web5 } = useContext(Context);
-    const [selectedTab, setSelectedTab] = useState(4);
+    const [selectedTab, setSelectedTab] = useState(0);
     const [newInput, setNewInput] = useState('');
     const [records, setRecords] = useState([]);
     const [publishing, setPublishing] = useState(false);
@@ -45,7 +45,9 @@ export default () => {
                 "disambiguatingDescription": profile.bio,
                 "affiliation": profile.orgs,
                 "email": profile.email,
-                "url": profile.links
+                "url": profile.links,
+                "identifier": profile.wallet,
+                "additionalName": lockedName,
             },
         ]
 
@@ -101,13 +103,14 @@ export default () => {
         console.log("delete respo", response)
 
         if (response.status.code === 202) {
+            setSuccess(true)
             console.log(`Record deleted successfully`);
         } else {
             console.log(`${response.status}. Error deleting record`);
         }
+        setSuccess(false)
 
     };
-
 
     // Function to fetch Person
     useEffect(() => {
@@ -168,7 +171,7 @@ export default () => {
             }, 5000);
         }
         getPerson()
-    }, [web5])
+    }, [web5, success])
 
 
     const handleChange = (e) => {
@@ -228,16 +231,16 @@ export default () => {
             name: "Orgs",
             online: false
         },
-        {
-            icon:
-                <svg className='w-4 h-4' viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M36.797 13.412v5.238h7.857v-1.31c0-2.143-1.788-3.927-3.81-3.927h-4.047Zm-6.551-7.74c1.667 0 1.784 2.498 0 2.498h-15.48a1.223 1.223 0 0 1-.2.015c-1.474 0-1.512-2.513.2-2.513h15.48Zm0 5.238c1.667 0 1.784 2.502 0 2.502h-15.48c-1.666 0-1.784-2.502 0-2.502h15.48Zm0 5.238c1.667 0 1.784 2.502 0 2.502h-15.48c-1.666 0-1.784-2.502 0-2.502h15.48ZM12.03.434c-.714 0-1.311.593-1.311 1.428v22.026h17.86c1.191 0 1.784-2.022 2.381-2.975.594-1.194 1.784-2.025 3.096-2.146V1.862c0-.835-.594-1.428-1.312-1.428H12.03ZM4.528 8.408c-2.143 0-3.93 1.788-3.93 3.814v11.666h7.74V8.408h-3.81Z" fill="currentColor" />
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M34.414 21.27c-1.073 0-1.67 1.787-2.263 2.978-.597 1.428-1.905 2.142-3.334 2.142H.597v14.286c0 2.026 1.788 3.81 3.931 3.81h36.315c2.022 0 3.81-1.784 3.81-3.81V21.27H34.414Z" fill="currentColor" />
-                </svg>
-            ,
-            name: "Creds",
-            online: true
-        },
+        // {
+        //     icon:
+        //         <svg className='w-4 h-4' viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+        //             <path fill-rule="evenodd" clip-rule="evenodd" d="M36.797 13.412v5.238h7.857v-1.31c0-2.143-1.788-3.927-3.81-3.927h-4.047Zm-6.551-7.74c1.667 0 1.784 2.498 0 2.498h-15.48a1.223 1.223 0 0 1-.2.015c-1.474 0-1.512-2.513.2-2.513h15.48Zm0 5.238c1.667 0 1.784 2.502 0 2.502h-15.48c-1.666 0-1.784-2.502 0-2.502h15.48Zm0 5.238c1.667 0 1.784 2.502 0 2.502h-15.48c-1.666 0-1.784-2.502 0-2.502h15.48ZM12.03.434c-.714 0-1.311.593-1.311 1.428v22.026h17.86c1.191 0 1.784-2.022 2.381-2.975.594-1.194 1.784-2.025 3.096-2.146V1.862c0-.835-.594-1.428-1.312-1.428H12.03ZM4.528 8.408c-2.143 0-3.93 1.788-3.93 3.814v11.666h7.74V8.408h-3.81Z" fill="currentColor" />
+        //             <path fill-rule="evenodd" clip-rule="evenodd" d="M34.414 21.27c-1.073 0-1.67 1.787-2.263 2.978-.597 1.428-1.905 2.142-3.334 2.142H.597v14.286c0 2.026 1.788 3.81 3.931 3.81h36.315c2.022 0 3.81-1.784 3.81-3.81V21.27H34.414Z" fill="currentColor" />
+        //         </svg>
+        //     ,
+        //     name: "Creds",
+        //     online: true
+        // },
         {
             icon:
                 <svg className="w-4 h-4" viewBox="0 0 46 45" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -292,12 +295,13 @@ export default () => {
                         {selectedTab == 0 &&
                             <div className="flex flex-col justify-start items-center gap-10 md:px-10 px-5 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-2xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">Manage Your Profile {fetching &&
+                                    <p className="text-2xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">My Web5 Profile {fetching &&
                                         <div className='animate-spin text-white'>
                                             <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
                                             </svg>
-                                        </div>}</p>
+                                        </div>}
+                                    </p>
 
                                     <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
@@ -338,7 +342,7 @@ export default () => {
                                         />
                                     </div>
                                     <div className="grid space-y-1">
-                                        <label className="text-zinc-500" htmlFor="familyName">Your Bio</label>
+                                        <label className="text-zinc-500" htmlFor="familyName">Add Bio</label>
                                         <input
                                             className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                             type="text"
@@ -392,7 +396,13 @@ export default () => {
                         {selectedTab == 1 &&
                             <div className="flex flex-col justify-start items-center  md:px-10 px-5 gap-10 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl md:text-3xl font-bold">Your Organizations</p>
+                                    <p className="text-xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">My Organizations {fetching &&
+                                        <div className='animate-spin text-white'>
+                                            <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
+                                            </svg>
+                                        </div>}
+                                    </p>
                                     <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
@@ -435,7 +445,7 @@ export default () => {
                                 </form>
                             </div>
                         }
-                        {selectedTab == 2 &&
+                        {/* {selectedTab == 2 &&
                             <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
                                     <p className="text-xl md:text-3xl font-bold">Your Credentials</p>
@@ -477,11 +487,17 @@ export default () => {
                                     </ul>
                                 </form>
                             </div>
-                        }
-                        {selectedTab == 3 &&
+                        } */}
+                        {selectedTab == 2 &&
                             <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl md:text-3xl font-bold">Manage Your Links</p>
+                                    <p className="text-xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">My Shared Links {fetching &&
+                                        <div className='animate-spin text-white'>
+                                            <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
+                                            </svg>
+                                        </div>}
+                                    </p>
                                     <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
@@ -521,26 +537,22 @@ export default () => {
                                 </form>
                             </div>
                         }
-                        {selectedTab == 4 &&
+                        {selectedTab == 3 &&
                             <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
                                 <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl md:text-3xl font-bold">Your DWN Records</p>
+                                    <p className="text-xl md:text-3xl font-bold">My DWN Records</p>
                                 </div>
-                                <ul className="md:px-10 px-5 py-5 w-full divide-y divide-zinc-800 space-y-2">
-                                    {records?.map((record, idx) => (
-                                        <li key={idx} className='flex pt-2 hover:text-[#D0FF00] items-center justify-between gap-5'>
-                                            <p className='gap-4 flex'><span className='font-semibold'>ID No.{idx}:</span> {record.id.slice(0, 10)}...{record.id.slice(-10)}</p>
-                                            <button onClick={() => deleteRecord(record.id)} className='bg-red-900 text-white px-3 py-1'>Delete</button>
+                                <ul className=" py-5 w-full divide-y divide-zinc-800 space-y-2">
+                                    {records?.slice().reverse().map((record, idx) => (
+                                        <li key={idx} className={`flex pt-2 hover:text-[#D0FF00] rounded-xl hover:bg-zinc-800 items-center justify-between px-4 md:px-6 py-2 gap-5 ${idx === 0 ? 'bg-zinc-800' : ''
+                                            }`}>
+                                            <p className='gap-2 tex-sm md:flex font-mono'> {record.id.slice(0, 10)}...{record.id.slice(-10)} <span className='font-semibold font-sans text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></p>
+                                            <button onClick={() => deleteRecord(record.id)} className='text-red-900 hover:text-red-600 py-1'>Delete</button>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                         }
-                        <div className="block md:hidden w-full px-5 mt-10">
-                            <button onClick={publishPerson} disabled={publishing} className=" p-2 uppercase w-full xbtn">
-                                {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
-                            </button>
-                        </div>
                     </section>
                 </div>
             </section>
