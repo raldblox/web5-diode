@@ -300,13 +300,11 @@ export default () => {
         },
         {
             icon:
-                <svg className="w-4 h-4" width="10" height="10" viewBox="0 0 0.2 0.2" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="currentColor" d="M.05.113H.1v.025H.05V.113z" />
-                    <path fill="currentColor" d="M.2.025H.187V0H.063v.025H.038v.016L.03.05H.013v.022L0 .088v.113h.15L.2.138V.025zM.025.063h.1v.025h-.1V.063zm.113.125H.013V.1h.125v.088zm.013-.1H.138V.05H.05V.038h.1v.05zM.176.057.163.073V.025H.075V.013h.1v.044z" />
+                <svg className="w-4 h-4" width="50" height="50" viewBox="0 0 0.938 0.938" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M.281.469h.25M.688.25.531.468l.157.22M.907.157a.125.125 0 0 1-.25 0 .125.125 0 0 1 .25 0Zm0 .625a.125.125 0 0 1-.25 0 .125.125 0 0 1 .25 0ZM.282.47a.125.125 0 0 1-.25 0 .125.125 0 0 1 .25 0Z" stroke="currentColor" stroke-linecap="square" stroke-width=".063" />
                 </svg>
-
             ,
-            name: "Share",
+            name: "",
             online: true
         },
 
