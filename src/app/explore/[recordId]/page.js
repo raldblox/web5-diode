@@ -88,7 +88,7 @@ export default ({ params }) => {
                         <h5 className='text-sm text-zinc-500'>{profile.email}</h5>
 
                         {profile.bio &&
-                            <h5 className='inline-flex items-center gap-4 my-5 font-mono text-zinc-300'>
+                            <h5 className='inline-flex items-start gap-4 my-10 font-mono text-zinc-300'>
                                 <svg className={`w-5 h-5 ${fetching && "animate-pulse"}`} width="50" height="50" viewBox="0 -0.156 0.875 0.875" xmlns="http://www.w3.org/2000/svg">
                                     <path fill="#D0FF00" d="M.313 0a.063.063 0 1 1 0 .125.184.184 0 0 0-.14.063A.188.188 0 1 1 0 .375V.313A.313.313 0 0 1 .313 0Zm.5 0a.063.063 0 0 1 0 .125.184.184 0 0 0-.14.063A.188.188 0 1 1 .5.375V.313A.313.313 0 0 1 .813 0ZM.188.313a.063.063 0 1 0 0 .125.063.063 0 0 0 0-.125Zm.5 0a.063.063 0 1 0 0 .125.063.063 0 0 0 0-.125Z" />
                                 </svg>
