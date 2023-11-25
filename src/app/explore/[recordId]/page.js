@@ -83,18 +83,18 @@ export default ({ params }) => {
                             <h1 className='text-3xl xtext text-bold'>diode:{profile.name}</h1>
                         }
                         <h5 className='font-bold text-lg'>{profile.fullName}</h5>
-                        <h5>{profile.email}</h5>
-                        <ul className='flex flex-wrap gap-2 mt-5'>
+                        <h5 className='text-sm text-zinc-500'>{profile.email}</h5>
+                        <ul className='flex flex-wrap gap-1 mt-5'>
                             {profile?.orgs?.map((org, idx) => (
-                                <li key={idx} className='rounded-full text-xs bg-zinc-800 py-1 border border-zinc-700 px-2'>{org.name}</li>
+                                <li key={idx} className='rounded-full text-xs bg-zinc-900 py-1 border border-zinc-700 px-2'>{org.name}</li>
                             ))}
                         </ul>
                     </div>
 
-                    <ul className='flex flex-col gap-2 mt-10 w-full'>
+                    <ul className='flex flex-col gap-2 mt-10 w-full overflow-hidden'>
                         {profile?.links?.map((link, idx) => (
                             <a key={idx} href={link} target='_blank'
-                                className='rounded-md text-center w-full p-2 text-sm py-2 border border-zinc-700 px-2'>
+                                className='rounded-md text-left overflow-hidden hover:text-[#D0FF00] hover:bg-zinc-800 w-full px-4 text-sm py-2 border border-zinc-800'>
                                 {link}
                             </a>
                         ))}
