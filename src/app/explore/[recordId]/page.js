@@ -99,7 +99,7 @@ export default ({ params }) => {
                     </div>
 
                     {profile?.links.length > 0 &&
-                        <div className='space-y-4 p-4 md:p-8 w-full rounded-3xl bg-[#151515]'>
+                        <div className='space-y-4 p-4 md:p-8 w-full rounded-3xl bg-[#131313]'>
                             <div className='space-y-2'>
                                 <p className='text-sm uppercase'>Affiliations</p>
                                 <ul className='flex flex-wrap'>

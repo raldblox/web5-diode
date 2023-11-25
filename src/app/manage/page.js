@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default () => {
     const { userDid, lockedName, web5 } = useContext(Context);
-    const [selectedTab, setSelectedTab] = useState(4);
+    const [selectedTab, setSelectedTab] = useState(0);
     const [newInput, setNewInput] = useState('');
     const [records, setRecords] = useState([]);
     const [publishing, setPublishing] = useState(false);
@@ -315,7 +315,7 @@ export default () => {
         },
         {
             icon:
-                <svg className="w-4 h-4" width="50" height="50" viewBox="0 0 0.938 0.938" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-4 h-4 text-[#D0FF00]" width="50" height="50" viewBox="0 0 0.938 0.938" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M.281.469h.25M.688.25.531.468l.157.22M.907.157a.125.125 0 0 1-.25 0 .125.125 0 0 1 .25 0Zm0 .625a.125.125 0 0 1-.25 0 .125.125 0 0 1 .25 0ZM.282.47a.125.125 0 0 1-.25 0 .125.125 0 0 1 .25 0Z" stroke="currentColor" stroke-linecap="square" stroke-width=".063" />
                 </svg>
             ,
