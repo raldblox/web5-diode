@@ -139,9 +139,9 @@ export default () => {
     };
 
     const handleMessage = async (e) => {
-        console.log("sending msg")
+        console.log("Sending msg")
         const { record } = await web5.dwn.records.create({
-            data: "this message is sent with diode",
+            data: `https://web5.diode.digital/explore/${records.slice(-1)[0]?.id}`,
             message: {
                 dataFormat: 'text/plain'
             }
@@ -177,7 +177,7 @@ export default () => {
                 }
 
                 setRecords(rawdata);
-                console.log("raw", rawdata);
+                console.log("DWN Records:", rawdata);
 
                 try {
                     const results = await Promise.all(
@@ -188,7 +188,7 @@ export default () => {
                     // console.log(latestRecord);
 
                     if (recordStatus.code == 200) {
-                        console.log("Person records fetched");
+                        console.log("Person records fetched.");
                         setProfile({
                             email: latestRecord[0].email,
                             role: latestRecord[0].jobTitle,
@@ -198,7 +198,6 @@ export default () => {
                             orgs: latestRecord[0].affiliation,
                             wallet: latestRecord[0].identifier
                         });
-                        console.log(latestRecord[0]);
                     }
 
                 } catch (error) {
@@ -582,8 +581,8 @@ export default () => {
                                     />
                                 </div>
                                 <div className='grid w-full gap-2 md:flex'>
-                                    <button onClick={handleShare} className="w-full px-4 py-2 btn">Send My Profile</button>
-                                    <button onClick={handleMessage} className="w-full px-4 py-2 btn">Send Message</button>
+                                    <button onClick={handleShare} className="w-full px-4 py-2 btn">Send Latest Record</button>
+                                    <button onClick={handleMessage} className="w-full px-4 py-2 btn">Send Profile Link</button>
                                 </div>
 
                                 {sent && <p className='text-[#D0FF00] text-lg text-center'>Profile Sent</p>}
@@ -609,7 +608,7 @@ export default () => {
                                             "additionalName": lockedName,
                                         },
                                         null,
-                                        2 // optional: adds indentation for better readability
+                                        2
                                     )}
                                 </code>
 
