@@ -14,7 +14,16 @@
 }
 
 * {
-  @apply transition-all duration-300 ease-out;
+  box-sizing: border-box;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @apply transition-all duration-150 scroll-smooth;
+}
+
+*::-webkit-scrollbar {
+  display: none;
 }
 
 body {
