@@ -6,13 +6,13 @@ import { webcrypto } from "node:crypto";
 import { Context } from '@/providers/ContextManager';
 
 export default ({ params }) => {
-    const { userDid, lockedName, web5 } = useContext(Context);
+    const { userDid, web5 } = useContext(Context);
     const [newInput, setNewInput] = useState('');
     const [records, setRecords] = useState([]);
-    const [fetching, setFetching] = useState(false);
+    const [fetching, setFetching] = useState(true);
 
     const [profile, setProfile] = useState({
-        name: lockedName,
+        name: '',
         fullName: '',
         bio: '',
         email: '',
@@ -31,9 +31,9 @@ export default ({ params }) => {
 
     // Function to fetch profile
     useEffect(() => {
+        setFetching(true);
         if (!web5) { return }
         const getPerson = async () => {
-            setFetching(true);
             const recordID = params.recordId;
             console.log("Fetching Profile", recordID)
             try {
@@ -54,40 +54,51 @@ export default ({ params }) => {
                     bio: userProfile[0].disambiguatingDescription,
                     links: userProfile[0].url,
                     orgs: userProfile[0].affiliation,
-                    wallet: userProfile[0].identifier
+                    wallet: userProfile[0].identifier,
+                    name: userProfile[0].additionalName
                 });
 
             } catch (error) {
                 console.error('Error fetching:', error);
             }
-            setTimeout(() => {
-                setFetching(false);
-            }, 5000);
+            // setTimeout(() => {
+            //     setFetching(false);
+            // }, 5000);
+            setFetching(false);
         }
         getPerson()
     }, [web5])
 
     return (
-        <Container className="flex w-full items-center justify-center min-h-screen">
-            <section className="w-full max-w-screen-md">
-                <div className="min-h-screen py-10 md:py-20" id="dashboard">
-                    <section className="relative ">
-                        <ul className="flex items-center px-5 md:justify-center mx-auto overflow-x-auto">
-                            <li className={`py-2 duration-150 border-b-4 border-[#d0ff00] text-white `}>
-                                <div
-                                    className={`flex uppercase items-center text-xs md:text-sm px-4 py-2 font-medium rounded-lg gap-x-2 hover:bg zinc-800 active:bg-zinc-700`}
-                                >
-                                    {fetching ?
-                                        <div className='animate-spin text-white'>
-                                            <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
-                                            </svg>
-                                        </div> :
-                                        <>{profile?.fullName}</>}
-                                </div>
-                            </li>
+        <Container className="flex w-full items-center py-[15vh] justify-center min-h-[calc(100vh-120px)]">
+            <section className="w-full max-w-md ">
+                <div className="flex w-full flex-col items-start justify-between px-6 p-4 md:p-8 md:px-12 border shadow-2xl border-zinc-800 bg-[#181818] rounded-3xl">
+                    <div className=''>
+                        {fetching && !profile.name ?
+                            <div className='animate-spin text-white'>
+                                <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
+                                </svg>
+                            </div> :
+                            <h1 className='text-3xl xtext text-bold'>diode:{profile.name}</h1>
+                        }
+                        <h5 className='font-bold text-lg'>{profile.fullName}</h5>
+                        <h5>{profile.email}</h5>
+                        <ul className='flex flex-wrap gap-2 mt-5'>
+                            {profile?.orgs?.map((org, idx) => (
+                                <li key={idx} className='rounded-full text-xs bg-zinc-800 py-1 border border-zinc-700 px-2'>{org.name}</li>
+                            ))}
                         </ul>
-                    </section>
+                    </div>
+
+                    <ul className='flex flex-col gap-2 mt-10 w-full'>
+                        {profile?.links?.map((link, idx) => (
+                            <a key={idx} href={link} target='_blank'
+                                className='rounded-md text-center w-full p-2 text-sm py-2 border border-zinc-700 px-2'>
+                                {link}
+                            </a>
+                        ))}
+                    </ul>
                 </div>
             </section>
         </Container>

@@ -6,7 +6,7 @@ import { Context } from "@/providers/ContextManager";
 import ConnectWeb5 from "../utils/ConnectWeb5";
 
 export default () => {
-    const { userDid, name, setName, lockedName, setLockedName } = useContext(Context);
+    const { userDid, name, setName, lockedName, setLockedName, connectAccount } = useContext(Context);
 
     const registerName = async (newName) => {
         setName(newName);
@@ -31,7 +31,7 @@ export default () => {
                 <div className="text-center">
                     <div className="mt-5 space-y-2">
                         <h3 className="text-2xl font-bold sm:text-3xl">New Diode Profile</h3>
-                        <p className="">Don't have an account? <a href="" className="font-medium xtext">Sign up</a></p>
+                        <p className="">Don't have web5 account? <button onClick={connectAccount} className="font-medium xtext">Create now</button></p>
                     </div>
                 </div>
                 <div className="p-2 py-4 space-y-8 shadow sm:p-6 sm:rounded-lg">
@@ -54,11 +54,17 @@ export default () => {
                                 className="w-full bg-[#262626] px-3 py-2 mt-2 border rounded-lg shadow-sm outline-none focus:border-[green]"
                             />
                         </div>
-                        <button onClick={handleLockName}
-                            className="w-full px-4 py-2 font-medium xbtn"
-                        >
-                            CREATE
-                        </button>
+                        {lockedName ?
+
+                            <Link href="/manage" >
+                                <button className="w-full px-4 mt-4 py-2 font-medium xbtn">
+                                    DASHBOARD
+                                </button>
+                            </Link> :
+                            <button onClick={handleLockName} className="w-full px-4 py-2 font-medium xbtn">
+                                ASSIGN NAME
+                            </button>}
+
                     </form>
                     <div className="relative">
                         <span className="block w-full h-px bg-white"></span>

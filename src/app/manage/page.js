@@ -114,14 +114,14 @@ export default () => {
 
     const handleShare = async (e) => {
 
-        const writeToDwn = async (profile) => {
+        const storeToDwn = async (profile) => {
             const { record } = await web5.dwn.records.write({
                 data: profile,
                 message: {
                     schema: schema.uri,
                     dataFormat: 'application/json',
                     published: true,
-                    recipient: recipient,
+                    // recipient: recipient,
                 },
             });
             return record;
@@ -131,7 +131,7 @@ export default () => {
             return await record.send(recipient);
         };
 
-        const record = await writeToDwn(person);
+        const record = await storeToDwn(person);
         const { status } = await sendRecord(record);
 
         console.log("Share status", status);
@@ -145,6 +145,21 @@ export default () => {
         setTimeout(() => {
             setSent(false)
         }, 3000);
+    };
+
+    const handleMessage = async (e) => {
+        console.log("sending msg")
+        const { record } = await web5.dwn.records.create({
+            data: "this record is sent from diode",
+            message: {
+                dataFormat: 'text/plain'
+            }
+        });
+
+        //send record to recipient's DWN
+        const { status } = await record.send(recipient);
+
+        console.log("Message status", status);
     };
 
     // Function to fetch Person
@@ -348,7 +363,7 @@ export default () => {
                                         </div>}
                                     </p>
                                     <div className='flex gap-2'>
-                                        {records && !fetching &&
+                                        {records.length > 0 && !fetching &&
                                             <Link href={`/explore/${records.slice(-1)[0]?.id}`} className="w-fit px-3 py-2 border btn rounded-md border-zinc-700">
                                                 View Profile
                                             </Link>
@@ -576,6 +591,8 @@ export default () => {
                                     />
                                 </div>
                                 <button onClick={handleShare} className="px-4 py-2 w-full btn">Send My Profile</button>
+                                <button onClick={handleMessage} className="px-4 py-2 w-full btn">Send Message</button>
+
                                 {sent && <p className='text-[#D0FF00] text-lg text-center'>Profile Sent</p>}
                             </div>
                         }
