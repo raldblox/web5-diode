@@ -73,8 +73,8 @@ export default ({ params }) => {
     return (
         <Container className="flex w-full items-center py-[10vh] justify-center min-h-[calc(100vh-120px)]">
             <section className="w-full max-w-md ">
-                <div className="flex w-full aspect-square flex-col items-start justify-between px-6 p-4 md:p-8 md:px-12 border shadow-2xl border-zinc-800 bg-[#181818] rounded-3xl">
-                    <div className=''>
+                <div className="flex w-full aspect-square flex-col items-start justify-between border shadow-2xl border-zinc-800 bg-[#181818] rounded-3xl">
+                    <div className='p-4 px-6 md:p-8 md:px-12'>
                         {fetching && !profile.name ?
                             <div className='text-white animate-spin'>
                                 <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
@@ -99,7 +99,7 @@ export default ({ params }) => {
                     </div>
 
                     {profile?.links.length > 0 &&
-                        <div className='space-y-4'>
+                        <div className='space-y-4 p-4 md:p-8 w-full rounded-3xl bg-[#151515]'>
                             <div className='space-y-2'>
                                 <p className='text-sm uppercase'>Affiliations</p>
                                 <ul className='flex flex-wrap'>
@@ -114,7 +114,7 @@ export default ({ params }) => {
                                     <a key={idx} href={link} target='_blank'
                                         className='inline-flex items-center p-1 pr-2 text-sm font-medium duration-150 border rounded-full w-fit group border-zinc-600 hover:bg-zinc-800'>
                                         <span className='inline-block px-3 py-1 text-black rounded-full bg-zinc-500 group-hover:bg-[#50ff00]'>
-                                            <svg className='w-5 h-5' width="20" height="20" viewBox="0 0 12.8 12.8" xmlns="http://www.w3.org/2000/svg">
+                                            <svg className='w-4 h-4' width="20" height="20" viewBox="0 0 12.8 12.8" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1.2 5.65q0-.875.6-1.45.575-.6 1.45-.6h.875q.65 0 1.15.325T6 4.8H3.225q-.35 0-.575.25-.25.225-.25.575v1.55q0 .35.25.6.225.225.575.225H6q-.225.55-.725.875t-1.15.325H3.25q-.875 0-1.45-.575-.6-.6-.6-1.475v-1.5Zm10.4 1.5q0 .875-.575 1.475-.6.575-1.475.575h-.875q-.65 0-1.15-.325T6.8 8h2.775q.35 0 .6-.225.225-.25.225-.6v-1.55q0-.35-.225-.575-.25-.25-.6-.25H6.8q.225-.55.725-.875t1.15-.325h.875q.875 0 1.475.6.575.575.575 1.45v1.5Zm-8-1.35h5.6V7H3.6V5.8Z" />
                                             </svg>
                                         </span>
