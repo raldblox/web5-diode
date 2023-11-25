@@ -80,13 +80,13 @@ export default ({ params }) => {
                                     <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
                                 </svg>
                             </div> :
-                            <h1 className='text-3xl xtext text-bold'>diode:{profile.name}</h1>
+                            <h1 className='text-3xl xtext font-bold '>diode:{profile.name}</h1>
                         }
-                        <h5 className='font-bold text-lg'>{profile.fullName}</h5>
+                        <h5 className='font-semibold text-lg'>{profile.fullName}</h5>
                         <h5 className='text-sm text-zinc-500'>{profile.email}</h5>
                         <ul className='flex flex-wrap gap-1 mt-5'>
                             {profile?.orgs?.map((org, idx) => (
-                                <li key={idx} className='rounded-full text-xs bg-zinc-900 py-1 border border-zinc-700 px-2'>{org.name}</li>
+                                <li key={idx} className='rounded-full text-xs bg-zinc-800 py-1 border border-zinc-700 px-2'>{org.name}</li>
                             ))}
                         </ul>
                     </div>
