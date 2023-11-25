@@ -112,35 +112,26 @@ export default () => {
 
     };
 
-    const handleShare = async (e) => {
+    const handleShare = async () => {
+        console.log("sending profile")
 
-        const storeToDwn = async (profile) => {
-            const { record } = await web5.dwn.records.write({
-                data: profile,
-                message: {
-                    schema: schema.uri,
-                    dataFormat: 'application/json',
-                    published: true,
-                    // recipient: recipient,
-                },
-            });
-            return record;
-        };
+        const { record } = await web5.dwn.records.write({
+            data: person,
+            message: {
+                schema: schema.uri,
+                dataFormat: 'application/json',
+                published: true,
+                recipient: recipient,
+            },
+        });
 
-        const sendRecord = async (record) => {
-            return await record.send(recipient);
-        };
+        const { status: sendStatus } = await record.send(recipient);
 
-        const record = await storeToDwn(person);
-        const { status } = await sendRecord(record);
-
-        console.log("Share status", status);
-
-        if (status.code === 202) {
+        if (sendStatus.code === 202) {
             setSent(true)
             console.log(`Profile sent successfully`);
         } else {
-            console.log(`${status}. Error sending profile`);
+            console.log(`${sendStatus.detail}. Error sending profile`);
         }
         setTimeout(() => {
             setSent(false)
@@ -150,7 +141,7 @@ export default () => {
     const handleMessage = async (e) => {
         console.log("sending msg")
         const { record } = await web5.dwn.records.create({
-            data: "this record is sent from diode",
+            data: "this message is sent with diode",
             message: {
                 dataFormat: 'text/plain'
             }
