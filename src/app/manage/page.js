@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 export default () => {
     const { userDid, lockedName, web5 } = useContext(Context);
-    const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedTab, setSelectedTab] = useState(4);
     const [newInput, setNewInput] = useState('');
     const [records, setRecords] = useState([]);
     const [publishing, setPublishing] = useState(false);
@@ -326,11 +326,11 @@ export default () => {
     ]
 
     return (
-        <Container className="flex w-full items-center justify-center min-h-screen">
+        <Container className="flex items-center justify-center w-full min-h-screen">
             <section className="w-full max-w-screen-md">
                 <div className="min-h-screen py-10 md:py-20" id="dashboard">
                     <section className="relative ">
-                        <ul className="flex items-center px-5 md:justify-center mx-auto overflow-x-auto">
+                        <ul className="flex items-center px-5 mx-auto overflow-x-auto md:justify-center">
                             {
                                 tabItems.map((item, idx) => {
                                     return (
@@ -353,10 +353,10 @@ export default () => {
                     </section>
                     <section className="bg-[#181818] py-10 rounded-2xl w-full">
                         {selectedTab == 0 &&
-                            <div className="flex flex-col justify-start items-center gap-10 md:px-10 px-5 w-full">
-                                <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-2xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">Web5 Profile {fetching &&
-                                        <div className='animate-spin text-white'>
+                            <div className="flex flex-col items-center justify-start w-full gap-10 px-5 md:px-10">
+                                <div className="flex items-start justify-between w-full gap-4">
+                                    <p className="inline-flex items-center gap-4 py-1 text-2xl font-bold md:text-3xl">Web5 Profile {fetching &&
+                                        <div className='text-white animate-spin'>
                                             <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
                                             </svg>
@@ -364,30 +364,30 @@ export default () => {
                                     </p>
                                     <div className='flex gap-2'>
                                         {records.length > 0 && !fetching &&
-                                            <Link href={`/explore/${records.slice(-1)[0]?.id}`} className="w-fit px-3 py-2 border btn rounded-md border-zinc-700">
+                                            <Link href={`/explore/${records.slice(-1)[0]?.id}`} className="px-3 py-2 border rounded-md w-fit btn border-zinc-700">
                                                 View Profile
                                             </Link>
                                         }
-                                        <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
+                                        <button onClick={publishPerson} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
                                             {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                         </button>
                                     </div>
                                 </div>
 
-                                <form onSubmit={handleSubmit} className="col-span-1 grid gap-5 w-full">
+                                <form onSubmit={handleSubmit} className="grid w-full col-span-1 gap-5">
 
                                     <div className="grid space-y-1">
                                         <label className="text-zinc-500" htmlFor="username">Decentralized Identifier</label>
                                         <input
-                                            className="w-full px-3 py-1 border xtext rounded-md border-zinc-700"
+                                            className="w-full px-3 py-1 border rounded-md xtext border-zinc-700"
                                             disabled={true}
                                             value={userDid}
                                         />
                                     </div>
                                     <div className="grid space-y-1">
-                                        <label className="text-zinc-500" htmlFor="username">Diode Account <span className='text-zinc-600 text-sm'>(Reserved; Not Owned)</span></label>
+                                        <label className="text-zinc-500" htmlFor="username">Diode Account <span className='text-sm text-zinc-600'>(Reserved; Not Owned)</span></label>
                                         <input
-                                            className="w-full px-3 py-1 border xtext rounded-md border-zinc-700"
+                                            className="w-full px-3 py-1 border rounded-md xtext border-zinc-700"
                                             type="text"
                                             disabled={true}
                                             id="name"
@@ -420,7 +420,7 @@ export default () => {
                                             onChange={handleChange}
                                         />
                                     </div>
-                                    <div className="grid space-y-1 mb-10">
+                                    <div className="grid mb-10 space-y-1">
                                         <label className="text-zinc-500" htmlFor="email">Job Title</label>
                                         <input
                                             className="w-full px-3 py-1 border rounded-md border-zinc-700"
@@ -461,20 +461,20 @@ export default () => {
                         }
 
                         {selectedTab == 1 &&
-                            <div className="flex flex-col justify-start items-center  md:px-10 px-5 gap-10 w-full">
-                                <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">My Organizations {fetching &&
-                                        <div className='animate-spin text-white'>
+                            <div className="flex flex-col items-center justify-start w-full gap-10 px-5 md:px-10">
+                                <div className="flex items-start justify-between w-full gap-4">
+                                    <p className="inline-flex items-center gap-4 py-1 text-xl font-bold md:text-3xl">My Organizations {fetching &&
+                                        <div className='text-white animate-spin'>
                                             <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
                                             </svg>
                                         </div>}
                                     </p>
-                                    <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
+                                    <button onClick={publishPerson} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
-                                <form onSubmit={handleSubmit} className="col-span-1 grid gap-5 w-full">
+                                <form onSubmit={handleSubmit} className="grid w-full col-span-1 gap-5">
                                     <div className="grid space-y-1">
                                         <input
                                             className="w-full px-3 py-1 border rounded-md border-zinc-700"
@@ -484,7 +484,7 @@ export default () => {
                                             onChange={(e) => setNewInput(e.target.value)}
                                         />
                                     </div>
-                                    <button onClick={addOrganization} className="px-4 py-2 w-full btn">Add Organization</button>
+                                    <button onClick={addOrganization} className="w-full px-4 py-2 btn">Add Organization</button>
                                     <div className="relative">
                                         <span className="block w-full h-px bg-zinc-400"></span>
                                         {/* <p className="absolute inset-x-0 inline-block px-4 mx-auto text-sm w-fit bg-[#181818] -top-2 uppercase">
@@ -492,12 +492,12 @@ export default () => {
                                 </p> */}
                                     </div>
 
-                                    <ul className="md:px-10 px-5 py-5">
+                                    <ul className="px-5 py-5 md:px-10">
                                         {profile.orgs?.map((org, idx) => (
                                             <li key={idx} className='flex items-center gap-5'>
                                                 <svg
                                                     xmlns='http://www.w3.org/2000/svg'
-                                                    className="h-5 w-5 xtext"
+                                                    className="w-5 h-5 xtext"
                                                     viewBox='0 0 20 20'
                                                     fill='currentColor'>
                                                     <path
@@ -513,20 +513,20 @@ export default () => {
                             </div>
                         }
                         {selectedTab == 2 &&
-                            <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
-                                <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl py-1 gap-4 inline-flex items-center md:text-3xl font-bold">My Shared Links {fetching &&
-                                        <div className='animate-spin text-white'>
+                            <div className="flex flex-col items-center justify-start w-full gap-10 px-5 md:px-10">
+                                <div className="flex items-start justify-between w-full gap-4">
+                                    <p className="inline-flex items-center gap-4 py-1 text-xl font-bold md:text-3xl">My Shared Links {fetching &&
+                                        <div className='text-white animate-spin'>
                                             <svg className='h-8' width="20" height="20" viewBox="0 0 0.4 0.4" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
                                             </svg>
                                         </div>}
                                     </p>
-                                    <button onClick={publishPerson} disabled={publishing} className="md:px-6 md:block hidden p-2 uppercase w-fit xbtn">
+                                    <button onClick={publishPerson} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
-                                <form onSubmit={handleSubmit} className="col-span-1 grid  gap-5 w-full">
+                                <form onSubmit={handleSubmit} className="grid w-full col-span-1 gap-5">
                                     <div className="grid space-y-1">
                                         <input
                                             className="w-full px-3 py-1 border rounded-md border-zinc-700"
@@ -536,17 +536,17 @@ export default () => {
                                             onChange={(e) => setNewInput(e.target.value)}
                                         />
                                     </div>
-                                    <button onClick={addLink} className="px-4 py-2 w-full btn">Add Link</button>
+                                    <button onClick={addLink} className="w-full px-4 py-2 btn">Add Link</button>
                                     <div className="relative">
                                         <span className="block w-full h-px bg-zinc-400"></span>
                                     </div>
 
-                                    <ul className="md:px-10 px-5 py-5">
+                                    <ul className="px-5 py-5 md:px-10">
                                         {profile?.links?.map((link, idx) => (
                                             <a key={idx} href={link} target='_blank' className='flex hover:text-[#D0FF00] items-center gap-5'>
                                                 <svg
                                                     xmlns='http://www.w3.org/2000/svg'
-                                                    className="h-5 w-5 xtext"
+                                                    className="w-5 h-5 xtext"
                                                     viewBox='0 0 20 20'
                                                     fill='currentColor'>
                                                     <path
@@ -562,27 +562,27 @@ export default () => {
                             </div>
                         }
                         {selectedTab == 3 &&
-                            <div className="flex flex-col justify-start items-center md:px-10 px-5 gap-10 w-full">
-                                <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl py-1 md:text-3xl font-bold">My DWN Records</p>
+                            <div className="flex flex-col items-center justify-start w-full gap-10 px-5 md:px-10">
+                                <div className="flex items-start justify-between w-full gap-4">
+                                    <p className="py-1 text-xl font-bold md:text-3xl">My DWN Records</p>
                                 </div>
-                                <ul className="py-5 w-full text-sm md:text-base divide-y divide-zinc-800 space-y-2">
+                                <ul className="w-full py-5 space-y-2 text-sm divide-y md:text-base divide-zinc-800">
                                     {records?.slice().reverse().map((record, idx) => (
                                         <li key={idx} className={`flex pt-2 hover:text-[#D0FF00] rounded-xl hover:bg-zinc-800 items-center justify-between px-4 md:px-6 py-2 gap-5 ${idx === 0 ? 'bg-zinc-800' : ''
                                             }`}>
-                                            <a href={`/explore/${record.id}`} target='_blank' className='gap-2 md:flex font-mono'> {record.id.slice(0, 10)}...{record.id.slice(-5)} <span className='font-semibold font-sans whitespace-nowrap text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></a>
-                                            <button onClick={() => deleteRecord(record.id)} className='text-red-900 hover:text-red-600 py-1'>Delete</button>
+                                            <a href={`/explore/${record.id}`} target='_blank' className='gap-2 font-mono md:flex'> {record.id.slice(0, 10)}...{record.id.slice(-5)} <span className='font-semibold font-sans whitespace-nowrap text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></a>
+                                            <button onClick={() => deleteRecord(record.id)} className='py-1 text-red-900 hover:text-red-600'>Delete</button>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                         }
                         {selectedTab == 4 &&
-                            <div className="flex flex-col justify-start items-center md:px-10 px-5 pb-10 gap-10 w-full">
-                                <div className="flex w-full justify-between gap-4 items-start">
-                                    <p className="text-xl md:text-3xl font-bold">Share My Profile</p>
+                            <div className="flex flex-col items-center justify-start w-full gap-5 px-5 md:px-10">
+                                <div className="flex items-start justify-between w-full">
+                                    <p className="text-xl font-bold md:text-3xl">Share My Profile</p>
                                 </div>
-                                <div className="grid space-y-1 w-full">
+                                <div className="grid w-full mt-5 space-y-1">
                                     <input
                                         className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                         placeholder="Recipient DID"
@@ -590,16 +590,44 @@ export default () => {
                                         onChange={(e) => setRecipient(e.target.value)}
                                     />
                                 </div>
-                                <button onClick={handleShare} className="px-4 py-2 w-full btn">Send My Profile</button>
-                                <button onClick={handleMessage} className="px-4 py-2 w-full btn">Send Message</button>
+                                <div className='grid w-full gap-2 md:flex'>
+                                    <button onClick={handleShare} className="w-full px-4 py-2 btn">Send My Profile</button>
+                                    <button onClick={handleMessage} className="w-full px-4 py-2 btn">Send Message</button>
+                                </div>
 
                                 {sent && <p className='text-[#D0FF00] text-lg text-center'>Profile Sent</p>}
+
+                                <div className="flex items-start w-full mt-10">
+                                    <p className="text-xl font-bold text-left md:text-3xl">For Your Information</p>
+                                </div>
+
+                                <h5 className='w-full text-lg text-left'>Schema In Use</h5>
+                                <code className='p-2 text-left bg-zinc-800'>
+                                    {JSON.stringify(
+                                        {
+                                            "@context": schema.context,
+                                            "@type": schema.type,
+                                            "identifier": `${userDid.slice(0, 15)}...${userDid.slice(-15)}`,
+                                            "jobTitle": profile.role,
+                                            "name": profile.fullName,
+                                            "disambiguatingDescription": profile.bio,
+                                            "affiliation": profile.orgs,
+                                            "email": profile.email,
+                                            "url": profile.links,
+                                            "identifier": profile.wallet,
+                                            "additionalName": lockedName,
+                                        },
+                                        null,
+                                        2 // optional: adds indentation for better readability
+                                    )}
+                                </code>
+
                             </div>
                         }
                         {
                             selectedTab < 3 &&
                             <div className='px-5 pt-5'>
-                                <button onClick={publishPerson} disabled={publishing} className="block py-2 md:hidden px-4 uppercase w-full xbtn">
+                                <button onClick={publishPerson} disabled={publishing} className="block w-full px-4 py-2 uppercase md:hidden xbtn">
                                     {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                 </button>
                             </div>

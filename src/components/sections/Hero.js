@@ -12,7 +12,7 @@ const Hero = () => {
                         Setup your <span className="xtext">self-sovereign</span> identity with digital diode
                     </h1>
                     <p className="text-sm md:text-base opacity-70">
-                        Forge a circuit of trust in a world where data and identity are the currency. Break free from traditional constraints, showcase your diverse interests, unfold your vibrant and dynamic contribution in decentralized world with digital diodes.
+                        Forge a circuit of trust in a world where data and identity are the currency. Break free from traditional constraints, control your digital identity, showcase your diverse interests, unfold your vibrant and dynamic contribution with diode.
                     </p>
                     <div className='flex items-center pt-4 sm:text-sm'>
                         <DiodeLink />
