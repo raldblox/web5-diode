@@ -125,13 +125,14 @@ export default () => {
             },
         });
 
+        //send record to recipient's DWN
         const { status: sendStatus } = await record.send(recipient);
 
         if (sendStatus.code === 202) {
             setSent(true)
-            console.log(`Profile sent successfully`);
+            console.log(`Latest record sent successfully.`);
         } else {
-            console.log(`${sendStatus.detail}. Error sending profile`);
+            console.log(`Error sending profile: ${sendStatus.detail}`);
         }
         setTimeout(() => {
             setSent(false)
@@ -148,9 +149,17 @@ export default () => {
         });
 
         //send record to recipient's DWN
-        const { status } = await record.send(recipient);
+        const { status: sendStatus } = await record.send(recipient);
 
-        console.log("Message status", status);
+        if (sendStatus.code === 202) {
+            setSent(true)
+            console.log(`Profile link sent successfully`);
+        } else {
+            console.log(`Error sending profile: ${sendStatus.detail}`);
+        }
+        setTimeout(() => {
+            setSent(false)
+        }, 3000);
     };
 
     // Function to fetch Person
