@@ -183,7 +183,6 @@ export default () => {
                     const results = await Promise.all(
                         records.map(async (record) => record.data.json())
                     );
-                    console.log(results);
                     const latestRecord = results[results.length - 1];
                     // console.log(latestRecord);
 
@@ -246,12 +245,6 @@ export default () => {
                 ...(prevProfile.links || []), newInput],
         }));
         setNewInput('');
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission logic here
-        console.log('Submitted:', profile);
     };
 
     const tabItems = [
@@ -364,7 +357,7 @@ export default () => {
                                     </div>
                                 </div>
 
-                                <form onSubmit={handleSubmit} className="grid w-full col-span-1 gap-5">
+                                <form className="grid w-full col-span-1 gap-5">
 
                                     <div className="grid space-y-1">
                                         <label className="text-zinc-500" htmlFor="username">Decentralized Identifier</label>
@@ -464,7 +457,7 @@ export default () => {
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
-                                <form onSubmit={handleSubmit} className="grid w-full col-span-1 gap-5">
+                                <form className="grid w-full col-span-1 gap-5">
                                     <div className="grid space-y-1">
                                         <input
                                             className="w-full px-3 py-1 border rounded-md border-zinc-700"
@@ -516,7 +509,7 @@ export default () => {
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
-                                <form onSubmit={handleSubmit} className="grid w-full col-span-1 gap-5">
+                                <form className="grid w-full col-span-1 gap-5">
                                     <div className="grid space-y-1">
                                         <input
                                             className="w-full px-3 py-1 border rounded-md border-zinc-700"
