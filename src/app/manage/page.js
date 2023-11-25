@@ -602,7 +602,7 @@ export default () => {
                                 </div>
 
                                 <h5 className='w-full text-lg text-left'>Schema In Use</h5>
-                                <code className='p-2 text-left bg-zinc-800'>
+                                <code className='p-2 text-sm text-left md:text-base bg-zinc-800'>
                                     {JSON.stringify(
                                         {
                                             "@context": schema.context,
