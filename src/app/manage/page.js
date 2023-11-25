@@ -594,8 +594,10 @@ export default () => {
                                 </div>
 
                                 <h5 className='w-full text-lg text-left'>Schema In Use</h5>
-                                <code className='p-2 text-sm text-left md:text-base bg-zinc-800'>
-                                    {JSON.stringify(
+                                <textarea className='w-full p-4 font-mono text-sm text-left rounded-md md:text-base bg-zinc-800'
+                                    rows={10}
+                                    disabled={true}
+                                    value={JSON.stringify(
                                         {
                                             "@context": schema.context,
                                             "@type": schema.type,
@@ -612,7 +614,7 @@ export default () => {
                                         null,
                                         2
                                     )}
-                                </code>
+                                />
 
                             </div>
                         }
