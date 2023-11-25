@@ -38,7 +38,9 @@ export const ContextManager = (props) => {
         localStorage.setItem("lastConnectionTimestamp", null);
         console.log("Disconnect")
         setWeb5("");
+        setLockedName("");
         setUserDid("");
+        setName("");
     }
 
     useEffect(() => {
