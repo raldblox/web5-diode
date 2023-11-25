@@ -65,6 +65,7 @@ export const ContextManager = (props) => {
     }, [])
 
     useEffect(() => {
+        if (!userDid) { return }
         const setName = async () => {
             if (!lockedName) {
                 localStorage.setItem("userName", name);
