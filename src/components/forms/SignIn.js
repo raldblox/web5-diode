@@ -30,8 +30,8 @@ export default () => {
             <div className="w-full space-y-6 sm:max-w-md">
                 <div className="text-center">
                     <div className="mt-5 space-y-2">
-                        <h3 className="text-2xl font-bold sm:text-3xl">New Diode Profile</h3>
-                        <p className="">Don't have web5 account? <button onClick={connectAccount} className="font-medium xtext">Create now</button></p>
+                        <h3 className="text-2xl font-bold sm:text-3xl">Diode Account</h3>
+                        {!userDid && <p className="">Don't have an account? <button onClick={connectAccount} className="font-medium xtext">Create now</button></p>}
                     </div>
                 </div>
                 <div className="p-2 py-4 space-y-8 shadow sm:p-6 sm:rounded-lg">
@@ -41,9 +41,9 @@ export default () => {
                         <div>
                             <div className="flex justify-between text-sm">
                                 <label className="font-medium">
-                                    Diode Name
+                                    Diode Name <span className="text-zinc-500">(locally stored)</span>
                                 </label>
-                                <Link href="/shop" className="text-gray-500 hover:underline">Shop Names</Link>
+                                {/* <Link href="/shop" className="text-gray-500 hover:underline">Shop Names</Link> */}
                             </div>
                             <input
                                 disabled={!userDid || lockedName}

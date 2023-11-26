@@ -75,13 +75,17 @@ export default () => {
                             })
                         }
                         <span className='hidden w-px h-6 bg-gray-500 md:block'></span>
-                        <div className='items-center space-y-3 gap-x-4 md:flex md:space-y-0'>
-                            {lockedName && <li>
+                        <div className='items-center p-1 space-y-3 border border-zinc-700 rounded-xl gap-x-1 md:flex md:space-y-0'>
+                            {lockedName ? <li>
                                 <button onClick={(e) => setHidden(!hidden)} className={`block px-6 py-2 xbtn ${!hidden && "animate-pulse"}`}>
                                     {lockedName}
                                 </button>
-                            </li>}
-                            {!hidden && !userDid &&
+                            </li> :
+                                <Link href='/create' className={`block px-6 py-2 xbtn text-black`}>
+                                    Assign Name
+                                </Link>}
+
+                            {!hidden && userDid &&
                                 <li>
                                     <button onClick={userDid ? handleCopy : connectAccount} className="block px-6 py-2 btn md:inline">
                                         {userDid ? <>{copied ? "Copied to clipboard" : <>{userDid.slice(0, 13)}...{userDid.slice(-5)}</>}</> : <>{connecting ? "Connecting" : "Sign In"}</>}

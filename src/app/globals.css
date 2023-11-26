@@ -58,7 +58,7 @@ p {
 }
 
 nav a {
-  @apply text-zinc-400 hover:text-[#D0FF00] active:text-[#50ff00];
+  @apply text-zinc-400 active:text-[#50ff00];
 }
 
 #dashboard input {
