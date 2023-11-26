@@ -41,12 +41,12 @@ export default () => {
                         <div>
                             <div className="flex justify-between text-sm">
                                 <label className="font-medium">
-                                    Diode Name <span className="text-zinc-500">(locally stored)</span>
+                                    Username
                                 </label>
                                 {/* <Link href="/shop" className="text-gray-500 hover:underline">Shop Names</Link> */}
                             </div>
                             <input
-                                disabled={!userDid || lockedName}
+                                disabled={!userDid}
                                 value={name || lockedName}
                                 onChange={(e) => registerName(e.target.value)}
                                 type="text"
@@ -54,17 +54,18 @@ export default () => {
                                 className="w-full bg-[#262626] px-3 py-2 mt-2 border rounded-lg shadow-sm outline-none focus:border-[green]"
                             />
                         </div>
-                        {lockedName ?
-
-                            <Link href="/manage" >
-                                <button className="w-full px-4 py-2 mt-4 font-medium xbtn">
-                                    DASHBOARD
-                                </button>
-                            </Link> :
-                            <button onClick={handleLockName} className="w-full px-4 py-2 font-medium xbtn">
-                                ASSIGN NAME
-                            </button>}
-
+                        <div className="flex gap-2">
+                            <button onClick={handleLockName} disabled={!userDid} className={`w-full px-4 py-2 font-medium ${userDid ? "xbtn" : "btn"}`} >
+                                ASSIGN
+                            </button>
+                            {lockedName &&
+                                <Link href="/manage" >
+                                    <button className="w-full px-4 py-2 font-medium btn">
+                                        DASHBOARD
+                                    </button>
+                                </Link>
+                            }
+                        </div>
                     </form>
                     <div className="relative">
                         <span className="block w-full h-px bg-white"></span>

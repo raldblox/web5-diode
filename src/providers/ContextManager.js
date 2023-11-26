@@ -14,26 +14,23 @@ export const ContextManager = (props) => {
 
     const connectAccount = async () => {
         const { Web5 } = await import('@web5/api/browser');
-        
+
         setConnecting(true);
-        const lockedname = localStorage.getItem("lockedName");
-        setLockedName(lockedname);
 
         console.log("Connecting web5")
         const { web5, did } = await Web5.connect({
             sync: '5s'
         });
-        console.log(web5)
+        // console.log(web5)
         console.log("did: ", did);
         const timestamp = new Date().getTime();
         localStorage.setItem("lastConnectionTimestamp", timestamp);
 
-        setTimeout(() => {
-            setWeb5(web5);
-            setUserDid(did);
-            setName(lockedname);
-            setConnecting(false);
-        }, 1000);
+        const lockedname = localStorage.getItem("lockedName");
+        setLockedName(lockedname);
+        setWeb5(web5);
+        setUserDid(did);
+        setName(lockedname);
     }
 
     const disconnectAccount = async () => {
@@ -46,7 +43,6 @@ export const ContextManager = (props) => {
     }
 
     useEffect(() => {
-        // Check if there's a stored timestamp
         const lastConnectionTimestamp = localStorage.getItem(
             "lastConnectionTimestamp"
         );
@@ -77,7 +73,7 @@ export const ContextManager = (props) => {
             }
         }
         setName();
-    }, [name])
+    }, [name, lockedName, userDid])
 
 
     const value = {

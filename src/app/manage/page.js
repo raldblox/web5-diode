@@ -377,7 +377,7 @@ export default () => {
                                         />
                                     </div>
                                     <div className="grid space-y-1">
-                                        <label className="text-zinc-500" htmlFor="username">Diode Account <span className='text-sm text-zinc-600'>(Reserved; Not Owned)</span></label>
+                                        <label className=" text-zinc-500" htmlFor="username">Username<Link href="/create" className='px-2 text-sm text-zinc-600'>Change Username</Link></label>
                                         <input
                                             className="w-full px-3 py-1 border rounded-md xtext border-zinc-700"
                                             type="text"
@@ -385,7 +385,7 @@ export default () => {
                                             id="name"
                                             name="name"
                                             placeholder="john"
-                                            value={`diode:${lockedName}`}
+                                            value={lockedName}
                                         />
                                     </div>
                                     <div className="grid space-y-1">
