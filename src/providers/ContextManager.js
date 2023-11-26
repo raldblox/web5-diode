@@ -11,6 +11,7 @@ export const ContextManager = (props) => {
     const [name, setName] = useState("")
     const [lockedName, setLockedName] = useState("")
     const [connecting, setConnecting] = useState(false);
+    const [records, setRecords] = useState([]);
 
     const connectAccount = async () => {
         const { Web5 } = await import('@web5/api/browser');
@@ -78,7 +79,7 @@ export const ContextManager = (props) => {
 
     const value = {
         web5, setWeb5, userDid, setUserDid, connectAccount, connecting, setConnecting, disconnectAccount,
-        name, setName, lockedName, setLockedName
+        name, setName, lockedName, setLockedName, records, setRecords
     };
 
     return <Context.Provider value={value}>{props.children}</Context.Provider>;

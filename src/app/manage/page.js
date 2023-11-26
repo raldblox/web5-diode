@@ -7,14 +7,11 @@ import { Context } from '@/providers/ContextManager';
 import Link from 'next/link';
 
 export default () => {
-    const { userDid, lockedName, web5 } = useContext(Context);
+    const { userDid, lockedName, web5, records, setRecords } = useContext(Context);
     const [selectedTab, setSelectedTab] = useState(0);
     const [newInput, setNewInput] = useState('');
-    const [records, setRecords] = useState([]);
     const [publishing, setPublishing] = useState(false);
     const [success, setSuccess] = useState(false);
-    const [sent, setSent] = useState(false);
-    const [recipient, setRecipient] = useState("");
     const [fetching, setFetching] = useState(false);
 
     const [profile, setProfile] = useState({
@@ -112,60 +109,10 @@ export default () => {
 
     };
 
-    const handleShare = async () => {
-        console.log("sending profile")
-
-        const { record } = await web5.dwn.records.write({
-            data: person,
-            message: {
-                schema: schema.uri,
-                dataFormat: 'application/json',
-                published: true,
-                recipient: recipient,
-            },
-        });
-
-        //send record to recipient's DWN
-        const { status: sendStatus } = await record.send(recipient);
-
-        if (sendStatus.code === 202) {
-            setSent(true)
-            console.log(`Latest record sent successfully.`);
-        } else {
-            console.log(`Error sending profile: ${sendStatus.detail}`);
-        }
-        setTimeout(() => {
-            setSent(false)
-        }, 3000);
-    };
-
-    const handleMessage = async (e) => {
-        console.log("Sending msg")
-        const { record } = await web5.dwn.records.create({
-            data: `https://web5.diode.digital/explore/${records.slice(-1)[0]?.id}`,
-            message: {
-                dataFormat: 'text/plain'
-            }
-        });
-
-        //send record to recipient's DWN
-        const { status: sendStatus } = await record.send(recipient);
-
-        if (sendStatus.code === 202) {
-            setSent(true)
-            console.log(`Profile link sent successfully`);
-        } else {
-            console.log(`Error sending profile: ${sendStatus.detail}`);
-        }
-        setTimeout(() => {
-            setSent(false)
-        }, 3000);
-    };
-
-    // Function to fetch Person
     useEffect(() => {
+        if (!web5) { return }
 
-        const getPerson = async () => {
+        const init = async () => {
             setFetching(true);
             try {
                 const { records, status: recordStatus } = await web5.dwn.records.query({
@@ -219,7 +166,7 @@ export default () => {
                 setFetching(false);
             }, 5000);
         }
-        getPerson()
+        init()
     }, [web5, success])
 
 
@@ -356,7 +303,7 @@ export default () => {
                                     </p>
                                     <div className='flex gap-2'>
                                         {records.length > 0 && !fetching &&
-                                            <Link href={`/explore/${records.slice(-1)[0]?.id}`} className="px-3 py-2 border rounded-md w-fit btn border-zinc-700">
+                                            <Link href={`/profile/${records.slice(-1)[0]?.id}`} className="px-3 py-2 border rounded-md w-fit btn border-zinc-700">
                                                 View Profile
                                             </Link>
                                         }
@@ -562,7 +509,7 @@ export default () => {
                                     {records?.slice().reverse().map((record, idx) => (
                                         <li key={idx} className={`flex pt-2 hover:text-[#D0FF00] rounded-xl hover:bg-zinc-800 items-center justify-between px-4 md:px-6 py-2 gap-5 ${idx === 0 ? 'bg-zinc-800' : ''
                                             }`}>
-                                            <a href={`/explore/${record.id}`} target='_blank' className='gap-2 font-mono md:flex'> {record.id.slice(0, 10)}...{record.id.slice(-5)} <span className='font-semibold font-sans whitespace-nowrap text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></a>
+                                            <a href={`/profile/${record.id}`} target='_blank' className='gap-2 font-mono md:flex'> {record.id.slice(0, 10)}...{record.id.slice(-5)} <span className='font-semibold font-sans whitespace-nowrap text-[#D0FF00]'>{idx === 0 && "(Latest Record In Use)"}</span></a>
                                             <button onClick={() => deleteRecord(record.id)} className='py-1 text-red-900 hover:text-red-600'>Delete</button>
                                         </li>
                                     ))}
@@ -571,25 +518,15 @@ export default () => {
                         }
                         {selectedTab == 4 &&
                             <div className="flex flex-col items-center justify-start w-full gap-5 px-5 md:px-10">
-                                <div className="flex items-start justify-between w-full">
-                                    <p className="text-xl font-bold md:text-3xl">Share My Profile</p>
-                                </div>
-                                <div className="grid w-full mt-5 space-y-1">
-                                    <input
-                                        className="w-full px-3 py-1 border rounded-md border-zinc-700"
-                                        placeholder="Recipient DID"
-                                        value={recipient}
-                                        onChange={(e) => setRecipient(e.target.value)}
-                                    />
-                                </div>
-                                <div className='grid w-full gap-2 md:flex'>
-                                    <button onClick={handleShare} className="w-full px-4 py-2 btn">Send Latest Record</button>
-                                    <button onClick={handleMessage} className="w-full px-4 py-2 btn">Send Profile Link</button>
+                                <div className="flex items-start justify-end w-full">
+                                    {records.length > 0 && !fetching &&
+                                        <Link href={`/share/${records.slice(-1)[0]?.id}`} className="px-3 py-2 border rounded-md w-fit xbtn border-zinc-700">
+                                            Profile Sharing
+                                        </Link>
+                                    }
                                 </div>
 
-                                {sent && <p className='text-[#D0FF00] text-lg text-center'>Profile Sent</p>}
-
-                                <div className="flex items-start w-full mt-10">
+                                <div className="flex items-start w-full mt-5">
                                     <p className="text-xl font-bold text-left md:text-3xl">For Your Information</p>
                                 </div>
 
