@@ -41,7 +41,7 @@ export default () => {
                         <div>
                             <div className="flex justify-between text-sm">
                                 <label className="font-medium">
-                                    Create Name
+                                    Diode Name
                                 </label>
                                 <Link href="/shop" className="text-gray-500 hover:underline">Shop Names</Link>
                             </div>
@@ -57,7 +57,7 @@ export default () => {
                         {lockedName ?
 
                             <Link href="/manage" >
-                                <button className="w-full px-4 mt-4 py-2 font-medium xbtn">
+                                <button className="w-full px-4 py-2 mt-4 font-medium xbtn">
                                     DASHBOARD
                                 </button>
                             </Link> :
