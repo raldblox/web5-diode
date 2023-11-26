@@ -615,6 +615,24 @@ export default () => {
                                         2
                                     )}
                                 />
+                                {web5 &&
+                                    <>
+                                        <h5 className='w-full text-lg text-left'>Agent DID</h5>
+                                        <textarea className='w-full p-4 font-mono text-sm text-left rounded-md md:text-base bg-zinc-800'
+                                            rows={3}
+                                            disabled={true}
+                                            value={JSON.stringify(
+                                                {
+                                                    "agentDid": web5?.agent.agentDid,
+
+                                                },
+                                                null,
+                                                2
+                                            )}
+                                        />
+                                    </>
+                                }
+
 
                             </div>
                         }

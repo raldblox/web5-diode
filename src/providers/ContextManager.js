@@ -14,6 +14,7 @@ export const ContextManager = (props) => {
 
     const connectAccount = async () => {
         const { Web5 } = await import('@web5/api/browser');
+        
         setConnecting(true);
         const lockedname = localStorage.getItem("lockedName");
         setLockedName(lockedname);
@@ -22,6 +23,7 @@ export const ContextManager = (props) => {
         const { web5, did } = await Web5.connect({
             sync: '5s'
         });
+        console.log(web5)
         console.log("did: ", did);
         const timestamp = new Date().getTime();
         localStorage.setItem("lastConnectionTimestamp", timestamp);
