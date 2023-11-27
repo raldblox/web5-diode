@@ -109,16 +109,12 @@ export default ({ params }) => {
             }
         });
 
-
-
         console.log(`Create status: ${createStatus?.detail}`);
         const { status: sendStatus } = await sendRecord.send(recipientDid);
         console.log(`Send status: ${sendStatus?.detail}`);
+        setSent(true);
+        console.log(`Profile sent successfully`);
 
-        if (sendStatus.status.code === 202) {
-            setSent(true);
-            console.log(`Profile sent successfully`);
-        }
         setTimeout(() => {
             setSent(false)
         }, 3000);

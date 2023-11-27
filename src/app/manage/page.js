@@ -518,18 +518,14 @@ export default () => {
                         }
                         {selectedTab == 4 &&
                             <div className="flex flex-col items-center justify-start w-full gap-5 px-5 md:px-10">
-                                <div className="flex items-start justify-end w-full">
+                                <div className="flex items-center justify-between w-full">
+                                    <p className="text-xl font-bold text-left md:text-3xl">For Your Information</p>
                                     {records.length > 0 && !fetching &&
                                         <Link href={`/share/${records.slice(-1)[0]?.id}`} className="px-3 py-2 border rounded-md w-fit xbtn border-zinc-700">
                                             Profile Sharing
                                         </Link>
                                     }
                                 </div>
-
-                                <div className="flex items-start w-full mt-5">
-                                    <p className="text-xl font-bold text-left md:text-3xl">For Your Information</p>
-                                </div>
-
                                 <h5 className='w-full text-lg text-left'>Schema In Use</h5>
                                 <textarea className='w-full p-4 font-mono text-sm text-left rounded-md md:text-base bg-zinc-800'
                                     rows={10}
