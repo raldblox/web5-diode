@@ -10,28 +10,83 @@ export const ContextManager = (props) => {
     const [userDid, setUserDid] = useState("");
     const [name, setName] = useState("")
     const [lockedName, setLockedName] = useState("")
-    const [connecting, setConnecting] = useState(false);
     const [records, setRecords] = useState([]);
+    const [connecting, setConnecting] = useState(false);
+    const [subscribe, setSubscribe] = useState(false);
+
+    const schema = {
+        "context": 'https://schema.org/',
+        "type": 'Person',
+        get uri() { return this.context + this.type; }
+    }
+
+    const protocolDefinition = {
+        "protocol": "https://web5.diode.digital",
+        "published": true,
+        "types": {
+            "profile": {
+                "schema": schema.uri,
+                "dataFormats": ["application/json"]
+            },
+            "shared": {
+                "schema": schema.uri,
+                "dataFormats": ["application/json"]
+            },
+        },
+        "structure": {
+            "profile": {
+                "$actions": [
+                    {
+                        "who": "anyone",
+                        "can": "read"
+                    },
+                    {
+                        "who": "anyone",
+                        "can": "write"
+                    }
+                ],
+
+            },
+            "shared": {
+                "$actions": [
+                    {
+                        "who": "anyone",
+                        "can": "read"
+                    },
+                    {
+                        "who": "anyone",
+                        "can": "write"
+                    }
+                ]
+            }
+        }
+    }
 
     const connectAccount = async () => {
         const { Web5 } = await import('@web5/api/browser');
-
         setConnecting(true);
 
         console.log("Connecting web5")
         const { web5, did } = await Web5.connect({
             sync: '5s'
         });
-        // console.log(web5)
-        console.log("did: ", did);
+
+        console.log("userDid: ", did);
+
         const timestamp = new Date().getTime();
         localStorage.setItem("lastConnectionTimestamp", timestamp);
 
-        const lockedname = localStorage.getItem("lockedName");
-        setLockedName(lockedname);
+        if (web5 && did) {
+            const { protocol } = await web5.dwn.protocols.configure({
+                message: {
+                    definition: protocolDefinition
+                }
+            });
+            await protocol.send(did);
+        }
+
         setWeb5(web5);
         setUserDid(did);
-        setName(lockedname);
     }
 
     const disconnectAccount = async () => {
@@ -59,27 +114,16 @@ export const ContextManager = (props) => {
                 connectAccount();
             }
         }
+
         return () => {
             console.log("Getting account")
             // connectAccount();
         }
     }, [])
 
-    useEffect(() => {
-        if (!userDid) { return }
-        const setName = async () => {
-            if (!lockedName) {
-                localStorage.setItem("userName", name);
-                // console.log("name set")
-            }
-        }
-        setName();
-    }, [name, lockedName, userDid])
-
-
     const value = {
         web5, setWeb5, userDid, setUserDid, connectAccount, connecting, setConnecting, disconnectAccount,
-        name, setName, lockedName, setLockedName, records, setRecords
+        name, setName, lockedName, setLockedName, records, setRecords,
     };
 
     return <Context.Provider value={value}>{props.children}</Context.Provider>;

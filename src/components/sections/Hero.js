@@ -7,9 +7,9 @@ const Hero = () => {
     return (
         <section className="grid content-center min-h-[calc(100vh-120px)]">
             <div className="flex w-full max-w-screen-lg gap-16 px-2 mx-auto overflow-hidden md:px-8 md:flex">
-                <div className='grid max-w-xl space-y-10'>
-                    <p className="text-3xl font-bold sm:text-4xl">
-                        Setup your <span className="xtext">self-sovereign</span> identity on the decentralized web
+                <div className='grid max-w-2xl space-y-10'>
+                    <p className="text-3xl font-bold sm:text-5xl">
+                        Setup your <span className="xtext">self-sovereign</span> identity with diode
                     </p>
                     <p className="text-sm md:text-base opacity-70">
                         Forge a circuit of trust in a world where data and identity are the currency. Break free from traditional constraints, control your digital identity, showcase your diverse interests, unfold your vibrant and dynamic contribution with diode.

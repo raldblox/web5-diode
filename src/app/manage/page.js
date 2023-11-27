@@ -10,12 +10,17 @@ export default () => {
     const { userDid, lockedName, web5, records, setRecords } = useContext(Context);
     const [selectedTab, setSelectedTab] = useState(0);
     const [newInput, setNewInput] = useState('');
+
+    const [sent, setSent] = useState(false);
     const [publishing, setPublishing] = useState(false);
     const [success, setSuccess] = useState(false);
     const [fetching, setFetching] = useState(false);
 
+    const [sharedProfile, setSharedProfile] = useState([]);
+    const [recipientDid, setRecipientDid] = useState("");
+
     const [profile, setProfile] = useState({
-        name: lockedName,
+        name: '',
         fullName: '',
         bio: '',
         email: '',
@@ -44,35 +49,101 @@ export default () => {
             "email": profile.email,
             "url": profile.links,
             "identifier": profile.wallet,
-            "additionalName": lockedName,
+            "additionalName": profile.name,
         },
     ]
 
-    const publishPerson = async () => {
-        setPublishing(true);
-        console.log(person);
+    const protocolDefinition = {
+        "protocol": "https://web5.diode.digital",
+        "published": true,
+        "types": {
+            "profile": {
+                "schema": schema.uri,
+                "dataFormats": ["application/json"]
+            },
+            "shared": {
+                "schema": schema.uri,
+                "dataFormats": ["application/json"]
+            },
+        },
+        "structure": {
+            "profile": {
+                "$actions": [
+                    {
+                        "who": "anyone",
+                        "can": "read"
+                    },
+                    {
+                        "who": "anyone",
+                        "can": "write"
+                    }
+                ],
+            },
+            "shared": {
+                "$actions": [
+                    {
+                        "who": "anyone",
+                        "can": "read"
+                    },
+                    {
+                        "who": "anyone",
+                        "can": "write"
+                    }
+                ]
+            }
+        }
+    }
 
-        const response = await web5.dwn.records.create({
+    const publishProfile = async () => {
+        setPublishing(true);
+
+        const { status: publishStatus } = await web5.dwn.records.create({
             data: person,
             message: {
                 schema: schema.uri,
                 dataFormat: 'application/json',
                 published: true,
+                protocol: protocolDefinition.protocol,
+                protocolPath: 'profile'
             },
         });
 
-        console.log(response);
-        if (response.status.code === 202) {
-            setSuccess(true);
-            console.log(`Person is published successfully`);
+        console.log(`Create profile status: ${publishStatus?.detail}`);
+
+        setTimeout(() => {
+            setPublishing(false);
+        }, 1000);
+    }
+
+    const shareProfile = async () => {
+        setPublishing(true);
+        setSent(false);
+
+        const { record: profileRecord, status: publishStatus } = await web5.dwn.records.create({
+            data: person,
+            message: {
+                schema: schema.uri,
+                dataFormat: 'application/json',
+                published: true,
+                protocol: protocolDefinition.protocol,
+                protocolPath: 'shared'
+            },
+        });
+
+        console.log(`Publish profile status: ${publishStatus?.detail}`);
+        const { status: sendStatus } = await profileRecord.send(recipientDid);
+
+        if (sendStatus.status.code === 202) {
+            setSent(true)
+            console.log(`Profile sent successfully`);
         } else {
-            console.log(`${response.status}. Error adding person`);
+            console.log(`${sendStatus.status}. Error adding person`);
         }
 
         setTimeout(() => {
-            setSuccess(false);
             setPublishing(false);
-        }, 3000);
+            setSent(false);
+        }, 1000);
     }
 
     const deleteRecord = async (recordId) => {
@@ -109,6 +180,40 @@ export default () => {
 
     };
 
+    const deleteSharedRecord = async (recordId) => {
+
+        let deletedRecord;
+        let index = 0;
+
+        for (let record of sharedProfile) {
+            if (recordId === record.id) {
+                deletedRecord = record;
+                break;
+            }
+            index++;
+        }
+
+        // Remove the record from the records array
+        const updatedRecords = [...sharedProfile];
+        updatedRecords.splice(index, 1);
+        setRecords(updatedRecords);
+
+        const response = await web5.dwn.records.delete({
+            message: {
+                recordId: recordId,
+            },
+        });
+
+        if (response.status.code === 202) {
+            setSuccess(true)
+            console.log(`Record deleted successfully`);
+        } else {
+            console.log(`${response.status}. Error deleting record`);
+        }
+        setSuccess(false)
+
+    };
+
     useEffect(() => {
         if (!web5) { return }
 
@@ -119,6 +224,7 @@ export default () => {
                     message: {
                         filter: {
                             schema: schema.uri,
+                            protocolPath: 'profile'
                         },
                     },
                     dateSort: 'createdAscending',
@@ -151,7 +257,8 @@ export default () => {
                             bio: latestRecord[0].disambiguatingDescription,
                             links: latestRecord[0].url,
                             orgs: latestRecord[0].affiliation,
-                            wallet: latestRecord[0].identifier
+                            wallet: latestRecord[0].identifier,
+                            name: latestRecord[0].additionalName
                         });
                     }
 
@@ -159,15 +266,40 @@ export default () => {
                     console.error(error);
                 }
 
+
             } catch (error) {
                 console.error('Error fetching:', error);
             }
-            setTimeout(() => {
-                setFetching(false);
-            }, 5000);
+
+            try {
+                const { records, status: recordStatus } = await web5.dwn.records.query({
+                    message: {
+                        filter: {
+                            schema: schema.uri,
+                            protocolPath: 'shared'
+                        },
+                    },
+                    dateSort: 'createdAscending',
+                });
+
+                const rawdata = [];
+
+                for (let record of records) {
+                    const data = await record.data.json();
+                    const newData = { data, id: record.id };
+                    rawdata.push(newData);
+                }
+
+                setSharedProfile(rawdata);
+                console.log("Shared Profiles:", rawdata);
+
+            } catch (error) {
+                console.error('Error fetching:', error);
+            }
+            setFetching(false);
         }
         init()
-    }, [web5, success])
+    }, [web5, success, publishing])
 
 
     const handleChange = (e) => {
@@ -307,7 +439,7 @@ export default () => {
                                                 View Profile
                                             </Link>
                                         }
-                                        <button onClick={publishPerson} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
+                                        <button onClick={publishProfile} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
                                             {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                         </button>
                                     </div>
@@ -324,15 +456,15 @@ export default () => {
                                         />
                                     </div>
                                     <div className="grid space-y-1">
-                                        <label className=" text-zinc-500" htmlFor="username">Username<Link href="/create" className='px-2 text-sm text-zinc-600'>Change Username</Link></label>
+                                        <label className=" text-zinc-500" htmlFor="username">Diode Username</label>
                                         <input
                                             className="w-full px-3 py-1 border rounded-md xtext border-zinc-700"
                                             type="text"
-                                            disabled={true}
                                             id="name"
                                             name="name"
                                             placeholder="john"
-                                            value={lockedName}
+                                            value={profile.name}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="grid space-y-1">
@@ -409,7 +541,7 @@ export default () => {
                                             </svg>
                                         </div>}
                                     </p>
-                                    <button onClick={publishPerson} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
+                                    <button onClick={publishProfile} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
@@ -461,7 +593,7 @@ export default () => {
                                             </svg>
                                         </div>}
                                     </p>
-                                    <button onClick={publishPerson} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
+                                    <button onClick={publishProfile} disabled={publishing} className="hidden p-2 uppercase md:px-6 md:block w-fit xbtn">
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
@@ -503,9 +635,9 @@ export default () => {
                         {selectedTab == 3 &&
                             <div className="flex flex-col items-center justify-start w-full gap-10 px-5 md:px-10">
                                 <div className="flex items-start justify-between w-full gap-4">
-                                    <p className="py-1 text-xl font-bold md:text-3xl">My DWN Records</p>
+                                    <p className="py-1 text-xl font-bold md:text-3xl">My Profile Records</p>
                                 </div>
-                                <ul className="w-full py-5 space-y-2 text-sm divide-y md:text-base divide-zinc-800">
+                                <ul className="w-full py-5 space-y-2 text-sm divide-y md:text-base divide-zinc-800 max-h-[50vh] overflow-y-scroll">
                                     {records?.slice().reverse().map((record, idx) => (
                                         <li key={idx} className={`flex pt-2 hover:text-[#D0FF00] rounded-xl hover:bg-zinc-800 items-center justify-between px-4 md:px-6 py-2 gap-5 ${idx === 0 ? 'bg-zinc-800' : ''
                                             }`}>
@@ -514,17 +646,39 @@ export default () => {
                                         </li>
                                     ))}
                                 </ul>
+                                {sharedProfile.length > 0 &&
+                                    <>
+                                        <div className="flex items-start justify-between w-full gap-4 mt-5">
+                                            <p className="py-1 text-xl font-bold md:text-3xl">Received Profiles</p>
+                                        </div>
+                                        <ul className="w-full space-y-2 text-sm divide-y md:text-base divide-zinc-800 max-h-[50vh] overflow-y-scroll">
+                                            {sharedProfile?.slice().reverse().map((record, idx) => (
+                                                <li key={idx} className={`flex pt-2 hover:text-[#D0FF00] rounded-xl bg-zinc-800 hover:bg-zinc-900 items-center justify-between px-4 md:px-6 py-2 gap-5`}>
+                                                    <a href={`/profile/${record.id}`} target='_blank' className='gap-2 font-mono md:flex'>{record.id.slice(0, 10)}...{record.id.slice(-5)} (View)</a>
+                                                    <button onClick={() => deleteSharedRecord(record.id)} className='py-1 text-red-900 hover:text-red-600'>Delete</button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </>}
                             </div>
                         }
                         {selectedTab == 4 &&
                             <div className="flex flex-col items-center justify-start w-full gap-5 px-5 md:px-10">
-                                <div className="flex items-center justify-between w-full">
+                                <div className="flex items-start justify-between w-full gap-4">
+                                    <p className="py-1 text-xl font-bold md:text-3xl">Share My Profile</p>
+                                    {sent && <p className='text-[#D0FF00] text-lg text-center'>Profile Sent</p>}
+                                </div>
+                                <div className='flex items-start justify-between w-full gap-2'>
+                                    <input
+                                        className="w-full px-3 border rounded-md bg-zinc-800 border-zinc-700"
+                                        placeholder="Recipient DID"
+                                        value={recipientDid}
+                                        onChange={(e) => setRecipientDid(e.target.value)}
+                                    />
+                                    <button className='p-2 mt-2 uppercase md:px-6 w-fit xbtn' onClick={shareProfile}>{publishing ? "Publishing" : "Send"}</button>
+                                </div>
+                                <div className="flex items-center justify-between w-full mt-10">
                                     <p className="text-xl font-bold text-left md:text-3xl">For Your Information</p>
-                                    {records.length > 0 && !fetching &&
-                                        <Link href={`/share/${records.slice(-1)[0]?.id}`} className="px-3 py-2 border rounded-md w-fit xbtn border-zinc-700">
-                                            Profile Sharing
-                                        </Link>
-                                    }
                                 </div>
                                 <h5 className='w-full text-lg text-left'>Schema In Use</h5>
                                 <textarea className='w-full p-4 font-mono text-sm text-left rounded-md md:text-base bg-zinc-800'
@@ -572,7 +726,7 @@ export default () => {
                         {
                             selectedTab < 3 &&
                             <div className='px-5 pt-5'>
-                                <button onClick={publishPerson} disabled={publishing} className="block w-full px-4 py-2 uppercase md:hidden xbtn">
+                                <button onClick={publishProfile} disabled={publishing} className="block w-full px-4 py-2 uppercase md:hidden xbtn">
                                     {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                 </button>
                             </div>

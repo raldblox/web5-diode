@@ -6,9 +6,8 @@ import { useEffect, useState } from 'react'
 
 export default () => {
 
-
     return (
-        <Container className="flex w-full items-center justify-center min-h-screen">
+        <Container className="flex w-full items-center justify-center min-h-[calc(100vh-120px)]">
             <section className="w-full max-w-md">
                 <SignIn />
             </section>
