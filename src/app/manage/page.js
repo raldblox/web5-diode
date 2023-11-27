@@ -302,8 +302,7 @@ export default () => {
             setFetching(false);
         }
         init()
-    }, [web5, success, publishing])
-
+    }, [web5])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -317,14 +316,6 @@ export default () => {
         setProfile((prevProfile) => ({
             ...prevProfile,
             orgs: [...(prevProfile.orgs || []), { '@type': 'Organization', 'name': newInput }]
-        }));
-        setNewInput("")
-    };
-
-    const addCredential = () => {
-        setProfile((prevProfile) => ({
-            ...prevProfile,
-            creds: [...prevProfile.creds, newInput]
         }));
         setNewInput("")
     };
@@ -398,6 +389,10 @@ export default () => {
         },
 
     ]
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
 
     return (
         <Container className="flex items-center justify-center w-full min-h-screen">
@@ -548,12 +543,12 @@ export default () => {
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
-                                <form className="grid w-full col-span-1 gap-5">
+                                <form onSubmit={handleSubmit} className="grid w-full col-span-1 gap-5">
                                     <div className="grid space-y-1">
                                         <input
                                             className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                             placeholder="Name of Organization"
-                                            name="orgs"
+                                            type="text"
                                             value={newInput}
                                             onChange={(e) => setNewInput(e.target.value)}
                                         />
@@ -561,28 +556,23 @@ export default () => {
                                     <button onClick={addOrganization} className="w-full px-4 py-2 btn">Add Organization</button>
                                     <div className="relative">
                                         <span className="block w-full h-px bg-zinc-400"></span>
-                                        {/* <p className="absolute inset-x-0 inline-block px-4 mx-auto text-sm w-fit bg-[#181818] -top-2 uppercase">
-                                    ADDED ORGANIZATIONS
-                                </p> */}
+                                        <ul className="px-5 py-5 md:px-10">
+                                            {profile?.orgs?.map((org, idx) => (
+                                                <li key={idx} className='flex items-center gap-5'>
+                                                    <svg
+                                                        xmlns='http://www.w3.org/2000/svg'
+                                                        className="w-5 h-5 xtext"
+                                                        viewBox='0 0 20 20'
+                                                        fill='currentColor'>
+                                                        <path
+                                                            fill-rule='evenodd'
+                                                            d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                                                            clip-rule='evenodd'></path>
+                                                    </svg>{org.name}
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
-
-                                    <ul className="px-5 py-5 md:px-10">
-                                        {profile.orgs?.map((org, idx) => (
-                                            <li key={idx} className='flex items-center gap-5'>
-                                                <svg
-                                                    xmlns='http://www.w3.org/2000/svg'
-                                                    className="w-5 h-5 xtext"
-                                                    viewBox='0 0 20 20'
-                                                    fill='currentColor'>
-                                                    <path
-                                                        fill-rule='evenodd'
-                                                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                                                        clip-rule='evenodd'></path>
-                                                </svg>
-                                                {org.name}
-                                            </li>
-                                        ))}
-                                    </ul>
                                 </form>
                             </div>
                         }
@@ -600,12 +590,11 @@ export default () => {
                                         {publishing ? <>{success ? "Published" : "Publishing"}</> : "Publish"}
                                     </button>
                                 </div>
-                                <form className="grid w-full col-span-1 gap-5">
+                                <form onSubmit={handleSubmit} className="grid w-full col-span-1 gap-5">
                                     <div className="grid space-y-1">
                                         <input
                                             className="w-full px-3 py-1 border rounded-md border-zinc-700"
                                             placeholder="Add Link"
-                                            name="links"
                                             value={newInput}
                                             onChange={(e) => setNewInput(e.target.value)}
                                         />
