@@ -98,32 +98,34 @@ export default ({ params }) => {
 
                     </div>
 
-                    {profile?.links.length > 0 &&
+                    {profile?.orgs.length > 0 || profile?.links.length > 0 &&
                         <div className='space-y-4 p-4 md:p-8 w-full rounded-3xl bg-[#131313]'>
-                            <div className='space-y-2'>
-                                <p className='text-sm uppercase'>Affiliations</p>
-                                <ul className='flex flex-wrap'>
-                                    {profile?.orgs?.map((org, idx) => (
-                                        <li key={idx} className='px-2 py-1 text-xs border rounded-full bg-zinc-800 border-zinc-700 hover:bg-zinc-950'>{org.name}</li>
+                            {profile?.orgs.length > 0 &&
+                                <div className='space-y-2'>
+                                    <p className='text-sm uppercase'>Affiliations</p>
+                                    <ul className='flex flex-wrap'>
+                                        {profile?.orgs?.map((org, idx) => (
+                                            <li key={idx} className='px-2 py-1 text-xs border rounded-full bg-zinc-800 border-zinc-700 hover:bg-zinc-950'>{org.name}</li>
+                                        ))}
+                                    </ul>
+                                </div>}
+                            {profile?.links.length > 0 &&
+                                <ul className='flex flex-col w-full space-y-2 overflow-hidden'>
+                                    <p className='text-sm uppercase'>Shared Links</p>
+                                    {profile?.links?.map((link, idx) => (
+                                        <a key={idx} href={link} target='_blank'
+                                            className='inline-flex items-center w-full p-2 pr-2 text-sm font-medium duration-150 bg-transparent border rounded-full group border-zinc-700 hover:bg-zinc-950'>
+                                            <span className='inline-block px-3 py-1 text-black rounded-full bg-zinc-500 group-hover:bg-[#50ff00]'>
+                                                <svg className='w-4 h-4' width="20" height="20" viewBox="0 0 12.8 12.8" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1.2 5.65q0-.875.6-1.45.575-.6 1.45-.6h.875q.65 0 1.15.325T6 4.8H3.225q-.35 0-.575.25-.25.225-.25.575v1.55q0 .35.25.6.225.225.575.225H6q-.225.55-.725.875t-1.15.325H3.25q-.875 0-1.45-.575-.6-.6-.6-1.475v-1.5Zm10.4 1.5q0 .875-.575 1.475-.6.575-1.475.575h-.875q-.65 0-1.15-.325T6.8 8h2.775q.35 0 .6-.225.225-.25.225-.6v-1.55q0-.35-.225-.575-.25-.25-.6-.25H6.8q.225-.55.725-.875t1.15-.325h.875q.875 0 1.475.6.575.575.575 1.45v1.5Zm-8-1.35h5.6V7H3.6V5.8Z" />
+                                                </svg>
+                                            </span>
+                                            <p className='px-4 w-fit text-start'>
+                                                {link}
+                                            </p>
+                                        </a>
                                     ))}
-                                </ul>
-                            </div>
-                            <ul className='flex flex-col w-full space-y-2 overflow-hidden'>
-                                <p className='text-sm uppercase'>Shared Links</p>
-                                {profile?.links?.map((link, idx) => (
-                                    <a key={idx} href={link} target='_blank'
-                                        className='inline-flex items-center w-full p-2 pr-2 text-sm font-medium duration-150 bg-transparent border rounded-full group border-zinc-700 hover:bg-zinc-950'>
-                                        <span className='inline-block px-3 py-1 text-black rounded-full bg-zinc-500 group-hover:bg-[#50ff00]'>
-                                            <svg className='w-4 h-4' width="20" height="20" viewBox="0 0 12.8 12.8" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M1.2 5.65q0-.875.6-1.45.575-.6 1.45-.6h.875q.65 0 1.15.325T6 4.8H3.225q-.35 0-.575.25-.25.225-.25.575v1.55q0 .35.25.6.225.225.575.225H6q-.225.55-.725.875t-1.15.325H3.25q-.875 0-1.45-.575-.6-.6-.6-1.475v-1.5Zm10.4 1.5q0 .875-.575 1.475-.6.575-1.475.575h-.875q-.65 0-1.15-.325T6.8 8h2.775q.35 0 .6-.225.225-.25.225-.6v-1.55q0-.35-.225-.575-.25-.25-.6-.25H6.8q.225-.55.725-.875t1.15-.325h.875q.875 0 1.475.6.575.575.575 1.45v1.5Zm-8-1.35h5.6V7H3.6V5.8Z" />
-                                            </svg>
-                                        </span>
-                                        <p className='px-4 w-fit text-start'>
-                                            {link}
-                                        </p>
-                                    </a>
-                                ))}
-                            </ul>
+                                </ul>}
                         </div>
                     }
                 </div>
