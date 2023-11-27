@@ -122,6 +122,7 @@ export default () => {
         const { record: profileRecord, status: publishStatus } = await web5.dwn.records.create({
             data: person,
             message: {
+                recipient: recipientDid,
                 schema: schema.uri,
                 dataFormat: 'application/json',
                 published: true,
@@ -133,17 +134,18 @@ export default () => {
         console.log(`Publish profile status: ${publishStatus?.detail}`);
         const { status: sendStatus } = await profileRecord.send(recipientDid);
 
-        if (sendStatus.status.code === 202) {
+        if (sendStatus.code === 202) {
             setSent(true)
+            setPublishing(false);
             console.log(`Profile sent successfully`);
         } else {
             console.log(`${sendStatus.status}. Error adding person`);
         }
 
         setTimeout(() => {
-            setPublishing(false);
+
             setSent(false);
-        }, 1000);
+        }, 5000);
     }
 
     const deleteRecord = async (recordId) => {
