@@ -8,7 +8,7 @@ const Hero = () => {
         <section className="grid content-center min-h-[calc(100vh-120px)]">
             <div className="flex w-full max-w-screen-lg gap-16 px-2 mx-auto overflow-hidden md:px-8 md:flex">
                 <div className='grid max-w-2xl space-y-10'>
-                    <p className="text-3xl font-bold sm:text-5xl">
+                    <p className="text-4xl font-bold sm:text-5xl">
                         Setup your <span className="xtext">self-sovereign</span> identity with diode
                     </p>
                     <p className="text-sm md:text-base opacity-70">
