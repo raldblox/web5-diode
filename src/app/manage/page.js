@@ -302,7 +302,7 @@ export default () => {
             setFetching(false);
         }
         init()
-    }, [web5])
+    }, [web5, success, publishing])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
