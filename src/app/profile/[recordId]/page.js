@@ -81,10 +81,10 @@ export default ({ params }) => {
                                     <path fill-rule="evenodd" clip-rule="evenodd" fill="#D0FF00" d="M.348.175a.15.15 0 0 0-.296 0H.027a.175.175 0 0 1 .346 0H.348z" />
                                 </svg>
                             </div> :
-                            <h1 className='text-2xl font-bold md:text-3xl xtext'>diode:{profile.name}</h1>
+                            <h1 className='text-2xl font-bold md:text-3xl xtext'>diode:{profile.name} </h1>
                         }
 
-                        <h5 className='text-lg font-semibold uppercase'>{profile.fullName}</h5>
+                        <h5 className='text-base font-semibold uppercase'>{profile.fullName} <span className='px-2 text-zinc-600'>{profile.role}</span></h5>
                         <h5 className='text-sm text-zinc-500'>{profile.email}</h5>
 
                         {profile.bio &&
