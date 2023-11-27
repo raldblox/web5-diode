@@ -655,7 +655,7 @@ export default () => {
                                         </div>
                                         <ul className="w-full space-y-2 text-sm divide-y md:text-base divide-zinc-800 max-h-[50vh] overflow-y-scroll">
                                             {sharedProfile?.slice().reverse().map((record, idx) => (
-                                                <li key={idx} className={`flex pt-2 hover:text-[#D0FF00] rounded-xl bg-zinc-800 hover:bg-zinc-900 items-center justify-between px-4 md:px-6 py-2 gap-5`}>
+                                                <li key={idx} className={`flex ${record.data.recipient != userDid && "hidden"} pt-2 hover:text-[#D0FF00] rounded-xl bg-zinc-800 hover:bg-zinc-900 items-center justify-between px-4 md:px-6 py-2 gap-5`}>
                                                     <a href={`/profile/${record.id}`} target='_blank' className='gap-2 font-mono md:flex'>{record.id.slice(0, 10)}...{record.id.slice(-5)} (View)</a>
                                                     <button onClick={() => deleteSharedRecord(record.id)} className='py-1 text-red-900 hover:text-red-600'>Delete</button>
                                                 </li>
