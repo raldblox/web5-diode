@@ -198,7 +198,7 @@ export default () => {
         // Remove the record from the records array
         const updatedRecords = [...sharedProfile];
         updatedRecords.splice(index, 1);
-        setRecords(updatedRecords);
+        setSharedProfile(updatedRecords);
 
         const response = await web5.dwn.records.delete({
             message: {
