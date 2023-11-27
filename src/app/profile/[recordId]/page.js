@@ -98,7 +98,7 @@ export default ({ params }) => {
 
                     </div>
 
-                    {profile?.orgs.length > 0 || profile?.links.length > 0 &&
+                    {(profile?.orgs.length > 0 || profile?.links.length > 0) &&
                         <div className='space-y-4 p-4 md:p-8 w-full rounded-3xl bg-[#131313]'>
                             {profile?.orgs.length > 0 &&
                                 <div className='space-y-2'>
