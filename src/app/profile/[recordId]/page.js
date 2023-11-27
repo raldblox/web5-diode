@@ -71,7 +71,7 @@ export default ({ params }) => {
     }, [web5])
 
     return (
-        <Container className="flex w-full items-center py-[10vh] justify-center min-h-[calc(100vh-120px)]">
+        <Container className="flex w-full items-center py-[60px] justify-center min-h-[calc(100vh-120px)]">
             <section className="w-full max-w-md ">
                 <div className="flex w-full aspect-square flex-col items-start justify-between border shadow-2xl border-zinc-800 bg-[#181818] rounded-3xl">
                     <div className='p-4 px-6 md:p-8 md:px-12'>
@@ -85,7 +85,7 @@ export default ({ params }) => {
                         }
 
                         <h5 className='text-lg font-semibold uppercase'>{profile.fullName}</h5>
-                        <h5 className='px-2 text-base text-zinc-600'>{profile.role}</h5>
+                        <h5 className='text-base text-zinc-400'>{profile.role}</h5>
                         <h5 className='text-sm text-zinc-500'>{profile.email}</h5>
 
                         {profile.bio &&
